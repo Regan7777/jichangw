@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
+    "indexnow": "node scripts/submit-indexnow.js",
     "preview": "astro preview",
     "astro": "astro"
   },
