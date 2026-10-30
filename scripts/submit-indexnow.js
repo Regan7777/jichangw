@@ -1,7 +1,7 @@
 // IndexNow URL submission script for jichangw.com
 // Uses Node 18+ native fetch
 
-const KEY = 'fd39f10da6754dbba0568a18786c27f8';
+const KEY = 'e68a36d4814140b0b42aae7a7b1e59bb';
 const HOST = 'jichangw.com';
 const KEY_LOCATION = `https://${HOST}/${KEY}.txt`;
 
