@@ -1,0 +1,185 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const toolSections = [
+  {
+    category: '高可用订阅转换工具 (Subscription Converters)',
+    desc: '将不同服务商的节点链接转换为各大客户端标准格式（Clash、Sing-box、小火箭等），并挂载精细分流规则。',
+    tools: [
+      {
+        name: 'Subconverter 在线高可用后端',
+        badge: '开源核心',
+        desc: '全协议通用订阅转换引擎，支持把 SS/VLESS/Trojan 订阅转为 Clash Verge、Mihomo 与 Sing-box 格式。',
+        url: 'https://github.com/tindy2013/subconverter',
+      },
+      {
+        name: 'ACL4SSR 规则集在线生成器',
+        badge: '智能分流',
+        desc: '国内维护最全的智能分流规则集，精准分离国内直连、海外常用、流媒体与国外大模型平台流量。',
+        url: 'https://github.com/ACL4SSR/ACL4SSR',
+      },
+      {
+        name: 'Sub-Web 现代前端转换面板',
+        badge: 'Web 控制台',
+        desc: '基于 Vue 构建的轻量级订阅转换前端，支持自定义远程规则、排除节点关键字与重命名。',
+        url: 'https://github.com/CareyWang/sub-web',
+      },
+      {
+        name: 'CF Workers 边缘无服务器转换',
+        badge: '隐私自建',
+        desc: '部署在 Cloudflare 边缘的轻量级订阅转换脚本，完全杜绝第三方公共后端记录订阅链接的隐私泄露风险。',
+        url: 'https://github.com/bulianglin/subconverter-workers',
+      },
+    ],
+  },
+  {
+    category: '专业测速与网络吞吐基准 (Speedtest & Benchmarks)',
+    desc: '从单线程、多线程、CDN 视频流及三网回程多维度真实压测节点带宽与抗丢包能力。',
+    tools: [
+      {
+        name: 'Speedtest by Ookla (Web & CLI)',
+        badge: '国际权威',
+        desc: '全球部署节点最密集的测速标准，提供官方 CLI 工具用于服务器端精确排查单线程带宽瓶颈。',
+        url: 'https://www.speedtest.net',
+      },
+      {
+        name: 'Fast.com (Netflix 官方测速)',
+        badge: '流媒体专用',
+        desc: '直连 Netflix 全球 CDN 服务器测速，最能真实反映晚高峰节点观看 4K/8K 海外视频的真实下行。',
+        url: 'https://fast.com',
+      },
+      {
+        name: 'Superspeed 三网回程测速脚本',
+        badge: 'Linux 极客',
+        desc: '在 Linux 终端一键测试节点往返中国电信、联通、移动、教育网等各省骨干节点的实时延迟与带宽。',
+        url: 'https://github.com/ernisn/superspeed',
+      },
+      {
+        name: 'SEET / Ping.pe 多节点探测',
+        badge: '丢包率监控',
+        desc: '由全球数十个节点同时向目标服务器发送 ICMP 与 MTR 追踪，秒级发现晚高峰骨干网丢包率异常。',
+        url: 'https://ping.pe',
+      },
+    ],
+  },
+  {
+    category: 'AI 平台环境检测与 IP 纯净度 (AI & Security Check)',
+    desc: '专门针对 ChatGPT、Claude、Gemini、TikTok 及海外电商账号的风控防封禁体检工具链。',
+    tools: [
+      {
+        name: 'OpenAI 区域连通与 IP 属性探测',
+        badge: '大模型体检',
+        desc: '开源一键脚本，全面检测当前节点是否触发 Cloudflare 人机挑战、是否支持 ChatGPT 原生访问及 API 连通。',
+        url: 'https://github.com/oneclickvirt/openai',
+      },
+      {
+        name: 'BrowserLeaks WebRTC 泄露检测',
+        badge: '防物理暴露',
+        desc: '深度检测浏览器底层的 STUN 接口是否意外暴露了中国大陆真实内网/公网 IP，防止大模型直接封号。',
+        url: 'https://browserleaks.com/webrtc',
+      },
+      {
+        name: 'Scamalytics 风险欺诈分评估',
+        badge: '风控信誉度',
+        desc: '海外金融机构与各大平台风控引用的 IP 风险数据库，查询节点欺诈分（建议选择低于 15 分的纯净 IP）。',
+        url: 'https://scamalytics.com/ip',
+      },
+      {
+        name: 'IPCheck.ing 住宅原生属性查询',
+        badge: '属性识别',
+        desc: '一键识别当前节点是否为商业机房数据中心（Hosting）还是原生住宅宽带（Residential 住宅家宽）。',
+        url: 'https://ipcheck.ing',
+      },
+    ],
+  },
+  {
+    category: '线路验线与官方开源发布源 (Tracing & Official Repos)',
+    desc: '核验 IPLC 专线真伪与官方纯净客户端获取，杜绝非官方打包木马后门。',
+    tools: [
+      {
+        name: 'NextTrace (NTrace-core)',
+        badge: '专线验线神器',
+        desc: '开源可视化路由追踪，清晰看到每一跳 ASN 与骨干网出境路由器，一秒识破假专线。',
+        url: 'https://github.com/nxtrace/NTrace-core',
+      },
+      {
+        name: 'Mihomo Core (原 Clash.Meta)',
+        badge: '通用核心',
+        desc: '当前全平台通用代理底层分流引擎官方项目。',
+        url: 'https://github.com/MetaCubeX/mihomo',
+      },
+      {
+        name: 'Clash Verge Rev',
+        badge: '桌面端首选',
+        desc: '内置 Mihomo 核心，完美支持 Windows/macOS/Linux 的现代 GUI 客户端。',
+        url: 'https://github.com/clash-verge-rev/clash-verge-rev',
+      },
+      {
+        name: 'Sing-box Core & GUI',
+        badge: '次世代平台',
+        desc: '纯 Go 重构的通用轻量平台，软路由与移动端内存优化极佳。',
+        url: 'https://github.com/SagerNet/sing-box',
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="实用网络工具箱：订阅转换、AI测速、SEET丢包诊断与极客验线 · JICHANGW.COM"
+  description="收录Subconverter在线高可用订阅转换、ACL4SSR规则集、Fast/Speedtest/SEET多节点测速、OpenAI/Claude风控检测与NextTrace专线验线工具。"
+>
+  <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 space-y-10">
+    <header class="border-b border-slate-200 pb-4">
+      <div class="text-xs font-mono text-slate-400 mb-1">极客网络诊断工具箱</div>
+      <h1 class="text-2xl font-bold text-slate-900">极客验线、订阅转换与网络诊断工具箱</h1>
+      <p class="text-xs text-slate-500 mt-1">
+        摆脱商业宣传误导，通过权威中立工具链自测线路真伪、测速吞吐、AI环境纯净度与跨客户端订阅转换。
+      </p>
+    </header>
+
+    <div class="space-y-10">
+      {toolSections.map((section) => (
+        <section class="border border-slate-200 rounded-lg p-5 bg-white shadow-sm">
+          <div class="border-b border-slate-100 pb-3 mb-4">
+            <h2 class="text-base font-semibold text-slate-900">{section.category}</h2>
+            <p class="text-xs text-slate-500 mt-0.5">{section.desc}</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            {section.tools.map((tool) => (
+              <a
+                href={tool.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block p-3.5 border border-slate-200 rounded-lg hover:border-slate-400 transition-all bg-slate-50/40 hover:bg-white group"
+              >
+                <div class="flex items-center justify-between gap-2 mb-1.5">
+                  <span class="font-semibold text-xs text-slate-900 group-hover:text-slate-700">
+                    {tool.name}
+                  </span>
+                  <span class="badge badge-gray font-mono text-[10px]">{tool.badge}</span>
+                </div>
+                <p class="text-xs text-slate-500 leading-relaxed">{tool.desc}</p>
+                <div class="mt-2.5 text-[11px] font-mono text-slate-400 flex items-center justify-end gap-1">
+                  <span>打开工具源</span>
+                  <span>↗</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <!-- Usage Guidelines -->
+    <div class="border-l-4 border-slate-900 bg-slate-50 p-4 rounded-r-lg text-xs leading-relaxed text-slate-700 space-y-2">
+      <p class="font-semibold text-slate-900 font-mono">[站长使用安全提示]</p>
+      <p>
+        1. <strong>订阅转换隐私防范</strong>：尽量使用私有自建或信誉良好的转换源，严防公共免费转换接口记录个人节点订阅导致流量被盗刷；
+      </p>
+      <p>
+        2. <strong>AI平台封号排查</strong>：若ChatGPT提示Access Denied，首先使用上方Scamalytics排查节点欺诈分，其次检查BrowserLeaks的WebRTC是否泄露了本地IP。
+      </p>
+    </div>
+  </div>
+</BaseLayout>

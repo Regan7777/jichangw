@@ -1,0 +1,322 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DecisionMatrix from '../components/DecisionMatrix.astro';
+import AirportCard from '../components/AirportCard.astro';
+import ErrorTable from '../components/ErrorTable.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('posts');
+const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const now = new Date();
+const currentYearMonth = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}`;
+
+const featuredAirports = [
+  {
+    name: '神行加速',
+    tagline: '高速透传中转架构，主打海外办公与住宅家宽落地',
+    lineType: '高速透传中转',
+    protocols: 'Shadowsocks 2022 / VLESS',
+    pricing: '23元/月 (年付96元)',
+    speed: '暂无独立测速 (整理自公开资料)',
+    unlock: 'ChatGPT / 家宽落地原生IP',
+    pros: ['透传中转隧道', '住宅家宽落地', '站点与优惠码实时核验'],
+    cons: ['本站暂无独立测速数据', '不设纯按量计费'],
+    affUrl: '/go/shenxing',
+    reviewUrl: '/articles/shenxing-airport-review-2026',
+  },
+  {
+    name: '大佬云',
+    tagline: '四网动态中继架构，专攻大带宽流量包与影音流媒体支持',
+    lineType: '四网动态 BGP 中继',
+    protocols: 'VLESS / Hysteria 2',
+    pricing: '19.9元/月起 (多档位)',
+    speed: '暂无独立测速 (整理自公开资料)',
+    unlock: '全节点流媒体全解',
+    pros: ['单位流量单价低', '大带宽流量包档位', '站点与优惠码实时核验'],
+    cons: ['本站暂无独立测速数据', '高峰期受中继负载影响'],
+    affUrl: '/go/dalaoyun',
+    reviewUrl: '/articles/dalaoyun-airport-review-2026',
+  },
+  {
+    name: '闪电鼠',
+    tagline: '主打VLESS纯专线传输与IP池纯净度，专注海外账号防风控',
+    lineType: '企业级纯专线隧道',
+    protocols: 'VLESS / SS2022',
+    pricing: '22元/月 (年付96元)',
+    speed: '暂无独立测速 (整理自公开资料)',
+    unlock: '原生机房IP / Claude',
+    pros: ['官方标配低风控纯净IP', '协议适配稳定', '站点与优惠码实时核验'],
+    cons: ['本站暂无独立测速数据', '偏门冷门国家节点较少'],
+    affUrl: '/go/shandianshu',
+    reviewUrl: '/articles/shandianshu-airport-review-2026',
+  },
+  {
+    name: '榴莲云',
+    tagline: '多线动态接入优化，针对国内不同宽带运营商定向调优',
+    lineType: '多线 BGP + 专线调度',
+    protocols: 'VLESS / Trojan',
+    pricing: '24元/月 (年付96元)',
+    speed: '暂无独立测速 (整理自公开资料)',
+    unlock: '主流流媒体 / ChatGPT',
+    pros: ['多线BGP调度架构', '覆盖主流流媒体', '站点与优惠码实时核验'],
+    cons: ['本站暂无独立测速数据', '高倍率节点消耗较快'],
+    affUrl: '/go/liulianyun',
+    reviewUrl: '/articles/liulianyun-airport-review-2026',
+  },
+  {
+    name: '环球梯',
+    tagline: '全球多地区节点覆盖，适合海外本土化版权验证与多区域访问',
+    lineType: '全球冷门多地区 BGP',
+    protocols: 'VLESS / VMess',
+    pricing: '22元/月 (支持按量)',
+    speed: '暂无独立测速 (整理自公开资料)',
+    unlock: '土耳其/阿根廷等特色区',
+    pros: ['小众国家节点较为丰富', '支持轻量按量选购', '站点与优惠码实时核验'],
+    cons: ['本站暂无独立测速数据', '常规节点单价无明显优势'],
+    affUrl: '/go/huanqiuti',
+    reviewUrl: '/articles/huanqiuti-airport-review-2026',
+  },
+  {
+    name: '云界线',
+    tagline: '全专线架构，主打跨国高可用商务办公与AI大模型开发',
+    lineType: '全节点 IPLC 专线',
+    protocols: 'VLESS / Trojan / SS',
+    pricing: '22元/月 (年付96元)',
+    speed: '暂无独立测速 (整理自公开资料)',
+    unlock: 'TikTok / Disney+ / AI',
+    pros: ['全系不限在线设备数', '官方标称专线稳定性高', '站点与优惠码实时核验'],
+    cons: ['本站暂无独立测速数据', '不提供按量付费包'],
+    affUrl: '/go/yunjiexian',
+    reviewUrl: '/articles/yunjiexian-airport-review-2026',
+  },
+  {
+    name: '飞V',
+    tagline: '极低月付尝鲜门槛，适合初阶用户或作为第二容灾备用源',
+    lineType: '公网骨干中继隧道',
+    protocols: 'Shadowsocks / Trojan',
+    pricing: '12元/月 (学生档位)',
+    speed: '暂无独立测速 (整理自公开资料)',
+    unlock: '常见视频网站',
+    pros: ['起步仅需12元/月', '开箱即用门槛低', '站点与优惠码实时核验'],
+    cons: ['本站暂无独立测速数据', '高峰期建议配合故障转移策略'],
+    affUrl: '/go/flyv',
+    reviewUrl: '/articles/flyv-airport-review-2026',
+  },
+  {
+    name: '灵动云',
+    tagline: '全节点轻量中继架构，专注高性价比小额尝鲜与容灾冷备',
+    lineType: 'BGP 专线中转',
+    protocols: 'Trojan / VLESS / Hy2',
+    pricing: '20元/月 (年付99元)',
+    speed: '暂无独立测速 (整理自公开资料)',
+    unlock: 'ChatGPT / 主流流媒体',
+    pros: ['10元超低月付门槛', '提供一次性流量包', '站点与优惠码实时核验'],
+    cons: ['本站暂无独立测速数据', '单月流量池适中'],
+    affUrl: '/go/lingdongyun',
+    reviewUrl: '/articles/lingdongyun-airport-review-2026',
+  },
+];
+
+const faqs = [
+  {
+    question: '2026年挑选科学上网节点，优先看协议还是看线路？',
+    answer: '优先看底层物理线路。IPLC或IEPL内网专线不经过公网GFW防火墙，晚高峰抗波动与低丢包表现优于普通公网中继；在公网直连环境下，则必须优先选择VLESS-XTLS-Reality或Hysteria 2协议。',
+  },
+  {
+    question: '为什么订阅节点导入Clash或Mihomo后连上却无法上网？',
+    answer: '常见原因为本地系统时间与网络授时服务器偏差超过60秒，导致TLS握手校验失败；其次为本地TUN虚拟网卡与系统代理端口冲突，或DNS配置未开启fake-ip导致解析污染。',
+  },
+  {
+    question: '访问ChatGPT或Claude频繁提示Access Denied怎么处理？',
+    answer: '该报错由目标平台的IP风控机制触发。需要选择落地为住宅家宽或原生机房IP的节点，并使用BrowserLeaks检测WebRTC真实局域网IP是否发生物理泄漏。',
+  },
+  {
+    question: '使用按量付费节点和包月订阅哪种性价比更高？',
+    answer: '轻度办公、文字查资料及备用防失联用户推荐不限时按量付费套餐；重度4K流媒体播放、大文件下载或远程办公用户选择固定周期的大流量包月套餐成本更低。',
+  },
+];
+---
+
+<BaseLayout
+  title="2026科学上网与机场推荐指南：优质梯子节点横向评测与Mihomo配置大盘"
+  description="2026年最新科学上网梯子与节点选型门户。汇总神行加速、大佬云、榴莲云等8家主流服务商的官方资费、优缺点对比与站点实时核验，提供Mihomo客户端分流与报错排查。"
+>
+  <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 space-y-12">
+    <!-- Hero Branding Header -->
+    <section class="border-b border-slate-200 pb-8 pt-2">
+      <div class="space-y-4">
+        <div class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600 font-mono">
+          <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+          <span>2026 整理自官方公开资料 · 站点实时核验</span>
+        </div>
+        <h1 class="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+          机场网
+        </h1>
+        <p class="text-base font-medium text-slate-600 sm:text-lg">
+          您身边的机场评测专家
+        </p>
+        <p class="text-xs text-slate-500 max-w-2xl leading-relaxed">
+          基于各服务商官方公开技术资料整理与站点实时核验，坚决杜绝夸大吹嘘与虚构跑分。深度梳理 IPLC 专线、BGP 动态中继与新一代加密协议，为您提供实事求是、中立客观的科学出海节点选型与客户端配置指南。
+        </p>
+
+        <!-- Prominent Search Bar in Hero -->
+        <div class="pt-1 max-w-xl">
+          <div class="relative flex items-center group">
+            <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-hover:text-slate-600 transition-colors pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              placeholder="站内即时检索：输入机场名称（神行加速/大佬云）、客户端（小火箭/Clash）或协议..."
+              onclick="const el = document.getElementById('site-search-input'); if(el) { el.focus(); el.scrollIntoView({behavior:'smooth'}); }"
+              class="w-full h-10 pl-10 pr-20 text-xs rounded-lg border border-slate-300 bg-white shadow-sm placeholder:text-slate-400 focus:outline-none hover:border-slate-400 cursor-pointer transition-colors"
+              readonly
+            />
+            <span class="absolute right-3 top-1/2 -translate-y-1/2 font-mono text-[10px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
+              Ctrl K
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hero Matrix Section -->
+    <section>
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-4 gap-2">
+        <div>
+          <h2 class="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+            2026 主流服务商全景横向速查大盘
+          </h2>
+          <p class="text-xs text-slate-500 mt-1">
+            横向对比线路类型、公开资费、测速状态说明、流媒体支持与官方通道入口。
+          </p>
+        </div>
+        <div class="font-mono text-xs text-slate-400">
+          核验周期：{currentYearMonth}
+        </div>
+      </div>
+
+      <!-- Objective Disclosure Alert -->
+      <div class="mb-5 border border-slate-200 bg-slate-50/80 rounded-xl p-4 text-xs text-slate-600 leading-relaxed space-y-1">
+        <div class="flex items-center gap-2">
+          <span class="px-1.5 py-0.5 bg-slate-900 text-white font-mono text-[10px] rounded font-bold">声明</span>
+          <strong class="text-slate-900">数据源真实性与测速状态公开说明：</strong>
+        </div>
+        <p>
+          本站坚决杜绝为了促成商业转化而编造虚假跑分图表。目前全站所收录的各家服务商信息，<strong>本站暂未开展全量独立的晚高峰网络测速采样</strong>；文中所列出的线路架构、资费档位与协议参数，<strong>均整理自各服务商官方最新公开技术白皮书与运营公告</strong>。
+        </p>
+        <p>
+          本站评测团队已对收录服务商的<strong>官方主站可访问性、当前套餐标价、专属优惠码真实抵扣及后台系统进行了实时核验</strong>。网络质量受各地宽带运营商及国际网络波动影响，请以官方实际交付为准，坚持优先月付订阅。
+        </p>
+      </div>
+
+      <DecisionMatrix />
+    </section>
+
+    <!-- Featured Service Cards Grid -->
+    <section>
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h2 class="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+            精选服务商深度规格拆解
+          </h2>
+          <p class="text-xs text-slate-500 mt-1">
+            包含基础参数、套餐资费、测速状态说明与客观优缺点清单。
+          </p>
+        </div>
+        <a href="/category/pingce" class="text-xs font-mono text-slate-600 hover:text-slate-900 underline underline-offset-4">
+          查看全部 8 家单篇深度报告 →
+        </a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {featuredAirports.map((airport) => (
+          <AirportCard {...airport} />
+        ))}
+      </div>
+    </section>
+
+    <!-- Recent Blog Posts & Client Guides -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 pt-4 border-t border-slate-200">
+      <div class="lg:col-span-2 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+          <h2 class="text-lg font-bold text-slate-900">最新实测手记与配置文章</h2>
+          <a href="/category/jiaocheng" class="text-xs font-mono text-slate-500 hover:text-slate-900">
+            全部教程 →
+          </a>
+        </div>
+        <div class="divide-y divide-slate-100">
+          {sortedPosts.slice(0, 5).map((post) => (
+            <article class="py-3 flex items-start justify-between gap-4">
+              <div>
+                <a
+                  href={`/articles/${post.slug.replace(/^articles\//, '')}`}
+                  class="text-sm font-medium text-slate-900 hover:underline"
+                >
+                  {post.data.title}
+                </a>
+                <p class="text-xs text-slate-500 mt-1 line-clamp-1">
+                  {post.data.description}
+                </p>
+              </div>
+              <time class="text-xs text-slate-400 font-mono shrink-0">
+                {post.data.pubDate.toISOString().split('T')[0]}
+              </time>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <!-- Quick Knowledge & Principles Sidebar -->
+      <div class="space-y-4">
+        <div class="border-b border-slate-200 pb-2">
+          <h2 class="text-lg font-bold text-slate-900">避坑核心准则</h2>
+        </div>
+        <div class="border border-slate-200 rounded-lg p-4 bg-slate-50 space-y-3 text-xs text-slate-600 leading-relaxed">
+          <div>
+            <strong class="text-slate-900 block mb-1">1. 坚守月付订阅原则</strong>
+            <p>跨境服务天然具备不确定性。无论宣传背景如何，坚决拒绝一次性大额年付与终身包。</p>
+          </div>
+          <div class="border-t border-slate-200 pt-2">
+            <strong class="text-slate-900 block mb-1">2. 杜绝虚构测速图表</strong>
+            <p>本站暂无开展全量独立测速采样，仅整理官方公开数据与实时核验。以用户本地自测为准。</p>
+          </div>
+          <div class="border-t border-slate-200 pt-2">
+            <strong class="text-slate-900 block mb-1">3. 双订阅冷热冗余配置</strong>
+            <p>日常配置主力专线搭配不限时备用按量包，主链路发生网络抖动时毫秒级切换，杜绝失联。</p>
+          </div>
+          <div class="pt-1">
+            <a href="/risk" class="text-xs font-semibold text-slate-900 underline">阅读完整 5 大风控哲学 →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Error Troubleshooting Table -->
+    <section class="space-y-4">
+      <div class="border-b border-slate-200 pb-2">
+        <h2 class="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+          高频网络报错与排障检索表
+        </h2>
+        <p class="text-xs text-slate-500 mt-1">
+          针对节点超时、TLS 握手失败、TUN 网卡无网络等典型长尾故障的快速处置 SOP。
+        </p>
+      </div>
+      <ErrorTable />
+    </section>
+
+    <!-- FAQ Accordion Section -->
+    <section class="space-y-4">
+      <div class="border-b border-slate-200 pb-2">
+        <h2 class="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl">
+          科学上网常见疑问与选型指南 (FAQ)
+        </h2>
+        <p class="text-xs text-slate-500 mt-1">
+          汇总初学者与进阶极客关于专线选型、协议配置与资产安全的高频解答。
+        </p>
+      </div>
+      <FaqAccordion items={faqs} />
+    </section>
+  </div>
+</BaseLayout>

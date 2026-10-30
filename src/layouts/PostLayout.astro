@@ -1,0 +1,450 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+interface Props {
+  post: {
+    id: string;
+    slug: string;
+    body: string;
+    data: {
+      title: string;
+      description: string;
+      pubDate: Date;
+      updatedDate?: Date;
+      category: string;
+      tags: string[];
+      keywords?: string[];
+      faq?: Array<{ question: string; answer: string }>;
+    };
+  };
+  headings: Array<{ depth: number; slug: string; text: string }>;
+}
+
+const { post, headings } = Astro.props;
+const { title, description, pubDate, updatedDate, category, tags, keywords, faq } = post.data;
+
+// Automatically detect file modification time so update time always follows edits
+let fileMtime: Date | null = null;
+try {
+  const possibleFilenames = [
+    post.id,
+    post.id.endsWith('.md') ? post.id : `${post.id}.md`,
+    `${post.slug.replace(/^articles\//, '')}.md`,
+  ];
+  for (const name of possibleFilenames) {
+    const full = path.join(process.cwd(), 'src/content/posts', path.basename(name));
+    if (fs.existsSync(full)) {
+      fileMtime = fs.statSync(full).mtime;
+      break;
+    }
+  }
+} catch {
+  // Fallback gracefully
+}
+
+// 格式化本地日期 YYYY-MM-DD，杜绝 UTC 时区偏差
+function formatLocalDate(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+// 确保“最后验证”动态跟随文件实际修改或更新变动
+const effectiveUpdatedDate = fileMtime || updatedDate || pubDate || new Date();
+const displayPubDate = formatLocalDate(pubDate);
+const displayUpdatedDate = formatLocalDate(effectiveUpdatedDate);
+
+const canonicalUrl = `https://jichangw.com/articles/${post.slug.replace(/^articles\//, '')}`;
+
+// Calculate word count & estimated reading time
+const wordCount = (post.body || '').replace(/[\s#*`\-_|\n]/g, '').length;
+const readTimeMinutes = Math.max(3, Math.ceil(wordCount / 400));
+
+// Schema JSON-LD builder for E-E-A-T, Bing & AI Answer Engines
+const schemaData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'BlogPosting',
+      headline: title,
+      description: description,
+      abstract: description,
+      inLanguage: 'zh-CN',
+      speakable: {
+        '@type': 'SpeakableSpecification',
+        cssSelector: ['.ai-direct-answer', 'article > header p'],
+      },
+      datePublished: pubDate.toISOString(),
+      dateModified: effectiveUpdatedDate.toISOString(),
+      wordCount: wordCount,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalUrl,
+      },
+      author: {
+        '@type': 'Organization',
+        name: '机场网评测实验室 (JICHANGW Lab)',
+        url: 'https://jichangw.com',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: '机场网 · 您身边的机场评测专家',
+        url: 'https://jichangw.com',
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: '首页',
+          item: 'https://jichangw.com',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: category === 'pingce' ? '机场评测' : '配置教程',
+          item: `https://jichangw.com/category/${category}`,
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: title,
+          item: canonicalUrl,
+        },
+      ],
+    },
+    ...(faq && faq.length > 0
+      ? [
+          {
+            '@type': 'FAQPage',
+            mainEntity: faq.map((item) => ({
+              '@type': 'Question',
+              name: item.question,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: item.answer,
+              },
+            })),
+          },
+        ]
+      : []),
+  ],
+};
+
+const h2Headings = headings.filter((h) => h.depth === 2);
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  keywords={keywords}
+  canonicalUrl={canonicalUrl}
+  schema={schemaData}
+  type="article"
+>
+  <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+    <!-- Breadcrumb -->
+    <nav class="mb-6 flex items-center gap-2 text-xs text-slate-500 font-mono">
+      <a href="/" class="hover:text-slate-900">HOME</a>
+      <span>/</span>
+      <a href={`/category/${category}`} class="hover:text-slate-900 uppercase">
+        {category === 'pingce' ? '评测大盘' : '技术教程'}
+      </a>
+      <span>/</span>
+      <span class="text-slate-900 truncate max-w-xs">{title}</span>
+    </nav>
+
+    <div class="grid grid-cols-1 gap-10 lg:grid-cols-4">
+      <!-- Article Main Content -->
+      <article class="lg:col-span-3">
+        <header class="mb-8 border-b border-slate-200 pb-6">
+          <div class="flex flex-wrap items-center gap-2 mb-3">
+            <span class="badge badge-green font-mono uppercase">{category}</span>
+            <span class="text-xs text-slate-400 font-mono">
+              发布: {displayPubDate}
+            </span>
+            <span class="text-xs text-emerald-700 font-mono font-medium">
+              最后验证: {displayUpdatedDate}
+            </span>
+            <span class="text-xs text-slate-400 font-mono">
+              · 约 {wordCount} 字 · 耗时 {readTimeMinutes} 分钟
+            </span>
+          </div>
+          <h1 class="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl leading-snug">
+            {title}
+          </h1>
+          <!-- AI Direct Answer / GEO Featured Snippet Box -->
+          <div class="ai-direct-answer mt-4 border border-slate-200 bg-slate-50/90 rounded-lg p-4 sm:p-5 text-xs sm:text-sm text-slate-700 leading-relaxed space-y-2">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-600"></span>
+                <strong class="text-slate-900 font-semibold tracking-tight text-xs uppercase font-mono">
+                  AI 搜索直答摘要 · 核心结论导读 (DIRECT ANSWER)
+                </strong>
+              </div>
+              <span class="text-[11px] font-mono text-slate-500">
+                GEO 标准精选
+              </span>
+            </div>
+            <p class="text-slate-700 leading-relaxed font-normal">
+              {description}
+            </p>
+          </div>
+        </header>
+
+        <!-- Markdown Body -->
+        <div class="prose prose-slate max-w-none text-xs sm:text-sm leading-relaxed prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-slate-900 prose-a:text-slate-900 prose-a:underline hover:prose-a:text-slate-700 prose-pre:bg-slate-900 prose-pre:border prose-pre:border-slate-800 prose-table:text-xs">
+          <slot />
+        </div>
+
+        <!-- Render Visible Interactive FAQ Section if FAQ exists in frontmatter -->
+        {faq && faq.length > 0 && (
+          <section class="mt-12 pt-8 border-t border-slate-200 space-y-4">
+            <div class="border-b border-slate-200 pb-2">
+              <h2 class="text-lg font-bold text-slate-900 sm:text-xl">
+                高频常见问题与技术排坑解答 (FAQ)
+              </h2>
+              <p class="text-xs text-slate-500 mt-1 font-mono">
+                基于真实用户反馈与实测排查汇总，已注入 Schema.org FAQ 语义结构支持 AI 检索直答。
+              </p>
+            </div>
+            <div class="space-y-3">
+              {faq.map((item, idx) => (
+                <details class="group border border-slate-200 rounded-lg p-4 bg-white open:bg-slate-50/50 transition-colors">
+                  <summary class="font-semibold text-xs sm:text-sm text-slate-900 cursor-pointer list-none flex items-center justify-between gap-3">
+                    <span class="flex items-center gap-2">
+                      <span class="font-mono text-xs text-emerald-700 font-bold">Q{idx + 1}.</span>
+                      <span>{item.question}</span>
+                    </span>
+                    <span class="text-slate-400 group-open:rotate-180 transition-transform text-xs font-mono">
+                      ▼
+                    </span>
+                  </summary>
+                  <div class="mt-2.5 pt-2.5 border-t border-slate-100 text-xs text-slate-600 leading-relaxed pl-6">
+                    {item.answer}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <!-- Interlinking Hub: No Orphan Pages (全站内链网络) -->
+        <section class="mt-12 border border-slate-200 rounded-xl p-6 bg-slate-50 space-y-6">
+          <div class="border-b border-slate-200 pb-2">
+            <h3 class="text-sm font-bold text-slate-900 tracking-wider">
+              全站联动指引与推荐阅读
+            </h3>
+            <p class="text-[11px] text-slate-500 mt-0.5">
+              机场网已建立完整的内网专线评测、主流客户端配置与极客网络诊断知识图谱。
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+            <!-- Col 1: Core Client Tutorials -->
+            <div class="space-y-2">
+              <h4 class="font-bold text-slate-800 font-mono text-[11px] text-emerald-800">
+                // 主流客户端配置教程
+              </h4>
+              <ul class="space-y-1.5 text-slate-600">
+                <li>
+                  <a href="/articles/shadowrocket-tutorial-2026" class="hover:text-slate-900 underline">
+                    iOS · Shadowrocket 小火箭配置
+                  </a>
+                </li>
+                <li>
+                  <a href="/articles/clash-verge-rev-tutorial-2026" class="hover:text-slate-900 underline">
+                    Win/Mac · Clash Verge Rev TUN模式
+                  </a>
+                </li>
+                <li>
+                  <a href="/articles/v2rayn-tutorial-2026" class="hover:text-slate-900 underline">
+                    Windows · v2rayN 7.x 深度指南
+                  </a>
+                </li>
+                <li>
+                  <a href="/articles/v2rayng-tutorial-2026" class="hover:text-slate-900 underline">
+                    Android · v2rayNG 分应用代理
+                  </a>
+                </li>
+                <li>
+                  <a href="/articles/mihomo-party-tutorial-2026" class="hover:text-slate-900 underline">
+                    Mac/Win · Mihomo Party 开箱指引
+                  </a>
+                </li>
+                <li>
+                  <a href="/articles/openclash-tutorial-2026" class="hover:text-slate-900 underline">
+                    OpenWrt · 软路由全屋无感翻墙
+                  </a>
+                </li>
+                <li>
+                  <a href="/articles/sing-box-guide" class="hover:text-slate-900 underline">
+                    Sing-box · 通用内核通用配置
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Col 2: Top Airport Reviews -->
+            <div class="space-y-2">
+              <h4 class="font-bold text-slate-800 font-mono text-[11px] text-blue-800">
+                // 深度机场横评与专线推荐
+              </h4>
+              <ul class="space-y-1.5 text-slate-600">
+                <li>
+                  <a href="/articles/2026-scientific-browsing-airport-review" class="hover:text-slate-900 underline font-semibold">
+                    2026全网8大主流机场横评天梯大盘
+                  </a>
+                </li>
+                <li>
+                  <a href="/articles/shenxing-airport-review-2026" class="hover:text-slate-900 underline">
+                    神行加速 · 透传中转与家宽落地
+                  </a>
+                </li>
+                <li>
+                  <a href="/articles/dalaoyun-airport-review-2026" class="hover:text-slate-900 underline">
+                    大佬云 · BGP大带宽与超大流量池
+                  </a>
+                </li>
+                <li>
+                  <a href="/articles/shandianshu-airport-review-2026" class="hover:text-slate-900 underline">
+                    闪电鼠 · VLESS专线与IP防风控
+                  </a>
+                </li>
+                <li>
+                  <a href="/articles/yunjiexian-airport-review-2026" class="hover:text-slate-900 underline">
+                    云界线 · 全IPLC不限在线设备数
+                  </a>
+                </li>
+                <li>
+                  <a href="/articles/liulianyun-airport-review-2026" class="hover:text-slate-900 underline">
+                    榴莲云 · 移动联通抗QoS弱网穿透
+                  </a>
+                </li>
+                <li>
+                  <a href="/articles/huanqiuti-airport-review-2026" class="hover:text-slate-900 underline">
+                    环球梯 · 全球冷门小众国家内购
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Col 3: Geek Tools & Safety Guide -->
+            <div class="space-y-2">
+              <h4 class="font-bold text-slate-800 font-mono text-[11px] text-amber-800">
+                // 极客诊断工具与风险雷达
+              </h4>
+              <ul class="space-y-1.5 text-slate-600">
+                <li>
+                  <a href="/tools" class="hover:text-slate-900 underline">
+                    实用工具箱 · 订阅转换与ACL4SSR分流
+                  </a>
+                </li>
+                <li>
+                  <a href="/tools" class="hover:text-slate-900 underline">
+                    网络测速 · Ookla / Fast / SEET 多点测速
+                  </a>
+                </li>
+                <li>
+                  <a href="/tools" class="hover:text-slate-900 underline">
+                    路由诊断 · NextTrace 专线真假核验
+                  </a>
+                </li>
+                <li>
+                  <a href="/tools" class="hover:text-slate-900 underline">
+                    隐私安全 · WebRTC 与 DNS 泄漏检测
+                  </a>
+                </li>
+                <li>
+                  <a href="/risk" class="hover:text-slate-900 underline font-semibold text-rose-700">
+                    风险预警 · 5大避坑哲学与跑路防范
+                  </a>
+                </li>
+                <li>
+                  <a href="/category/pingce" class="hover:text-slate-900 underline">
+                    评测归档 · 8家单篇深度拆解卡片
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tags & Disclaimer Footer -->
+        <footer class="mt-8 border-t border-slate-200 pt-6">
+          <div class="flex flex-wrap gap-1.5 items-center mb-6">
+            <span class="text-xs text-slate-400 font-mono mr-2">TAGS:</span>
+            {tags.map((tag) => (
+              <span class="badge badge-gray font-mono">{tag}</span>
+            ))}
+          </div>
+
+          <div class="bg-slate-50 border border-slate-200 rounded p-4 text-xs text-slate-600">
+            <p class="font-semibold text-slate-900 mb-1">版权声明与客观说明</p>
+            <p class="leading-relaxed">
+              本文为 <strong>机场网 (JICHANGW.COM)</strong> 原创整理与技术手记。所涉及之服务商技术架构、资费体系与功能特性均整理自官方公开技术文档与社群公告，本站技术团队已对站点连通性与优惠码有效性完成实时在线核验。网络环境具备动态多变性，请遵守当地法律法规，严禁利用境外网络从事违法活动；所有服务商一律坚持“优先小额月付”原则，建立双链路冗余容灾。
+            </p>
+          </div>
+        </footer>
+      </article>
+
+      <!-- Sidebar TOC & Navigation -->
+      <aside class="hidden lg:block lg:col-span-1">
+        <div class="sticky top-20 space-y-6">
+          {h2Headings.length > 0 && (
+            <div class="border border-slate-200 rounded-lg p-4 bg-white shadow-sm">
+              <h3 class="text-xs font-semibold text-slate-900 uppercase font-mono tracking-wider border-b border-slate-100 pb-2 mb-3">
+                文章快速目录 (TOC)
+              </h3>
+              <ul class="space-y-2 text-xs text-slate-600 font-mono max-h-80 overflow-y-auto">
+                {h2Headings.map((h) => (
+                  <li>
+                    <a
+                      href={`#${h.slug}`}
+                      class="hover:text-slate-900 block truncate transition-colors"
+                    >
+                      {h.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          <div class="border border-slate-200 rounded-lg p-4 bg-slate-50 text-xs space-y-3">
+            <h4 class="font-semibold text-slate-900 font-mono border-b border-slate-200 pb-1.5">
+              快速导航与避坑准则
+            </h4>
+            <ul class="space-y-2 text-slate-600">
+              <li>
+                <a href="/articles/2026-scientific-browsing-airport-review" class="hover:text-slate-900 block font-medium">
+                  → 8家主流服务商横评大盘
+                </a>
+              </li>
+              <li>
+                <a href="/category/jiaocheng" class="hover:text-slate-900 block font-medium">
+                  → 全平台客户端教程大全
+                </a>
+              </li>
+              <li>
+                <a href="/tools" class="hover:text-slate-900 block font-medium">
+                  → 极客网络测速与诊断工具
+                </a>
+              </li>
+              <li>
+                <a href="/risk" class="hover:text-slate-900 block font-semibold text-rose-700">
+                  → 跑路高危信号与5大避坑准则
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>

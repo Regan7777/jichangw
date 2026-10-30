@@ -1,0 +1,108 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BackToTop from '../components/BackToTop.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  keywords?: string[];
+  canonicalUrl?: string;
+  schema?: object;
+  type?: 'website' | 'article';
+}
+
+const {
+  title,
+  description,
+  keywords = [
+    '2026机场推荐',
+    '科学上网梯子',
+    '稳定机场节点',
+    'Mihomo配置教程',
+    'Clash Verge Rev',
+    'NextTrace路由追踪',
+  ],
+  canonicalUrl = Astro.url.href,
+  schema,
+  type = 'website',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+
+    <!-- Open Graph / Social Signals -->
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="机场网 · 您身边的机场评测专家" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Verification -->
+    <meta name="msvalidate.01" content="auto-generated-token" />
+
+    <!-- Schema.org JSON-LD -->
+    {schema && (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    )}
+  </head>
+  <body class="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-slate-900 selection:text-white">
+    <Header />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+    <BackToTop />
+
+    <!-- Copy Code Snippet Enhancement -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('pre').forEach((pre) => {
+          if (pre.parentNode) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'relative group my-4';
+            pre.parentNode.insertBefore(wrapper, pre);
+            wrapper.appendChild(pre);
+
+            const btn = document.createElement('button');
+            btn.className = 'absolute right-2.5 top-2.5 px-2 py-1 text-[11px] font-mono text-slate-400 bg-slate-800/80 hover:bg-slate-700 hover:text-white rounded border border-slate-700 opacity-0 group-hover:opacity-100 transition-all';
+            btn.textContent = '复制';
+
+            btn.addEventListener('click', async () => {
+              const code = pre.querySelector('code')?.innerText || pre.innerText;
+              try {
+                await navigator.clipboard.writeText(code);
+                btn.textContent = '已复制';
+                btn.classList.add('text-emerald-400', 'border-emerald-500');
+                setTimeout(() => {
+                  btn.textContent = '复制';
+                  btn.classList.remove('text-emerald-400', 'border-emerald-500');
+                }, 2000);
+              } catch {
+                btn.textContent = '复制失败';
+              }
+            });
+
+            wrapper.appendChild(btn);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+

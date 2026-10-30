@@ -1,0 +1,63 @@
+---
+import Search from './Search.astro';
+
+const navItems = [
+  { label: '首页', href: '/' },
+  { label: '机场评测', href: '/category/pingce' },
+  { label: '客户端教程', href: '/category/jiaocheng' },
+  { label: '实用工具', href: '/tools' },
+  { label: '风险预警', href: '/risk' },
+];
+const currentPath = Astro.url.pathname;
+const now = new Date();
+const currentYearMonth = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}`;
+---
+
+<header class="sticky top-0 z-40 w-full border-b border-slate-200 bg-white/95 backdrop-blur">
+  <div class="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6 gap-3">
+    <div class="flex items-center gap-5 shrink-0">
+      <a href="/" class="flex items-center gap-2 text-base font-semibold tracking-tight text-slate-900">
+        <span class="inline-block h-3 w-3 bg-slate-900"></span>
+        <span class="font-bold">机场网</span>
+        <span class="hidden lg:inline text-xs text-slate-400 font-normal">| 您身边的机场评测专家</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-1">
+        {navItems.map((item) => {
+          const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+          return (
+            <a
+              href={item.href}
+              class={`px-2.5 py-1.5 text-xs font-medium rounded transition-colors ${
+                isActive
+                  ? 'bg-slate-100 text-slate-900 font-semibold'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              {item.label}
+            </a>
+          );
+        })}
+      </nav>
+    </div>
+
+    <!-- Site Search Input Box -->
+    <div class="flex-1 max-w-xs flex justify-end">
+      <Search />
+    </div>
+
+    <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+      <span class="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs text-emerald-800">
+        <span class="h-1.5 w-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+        <span class="font-mono text-[11px]">{currentYearMonth} VERIFIED</span>
+      </span>
+      <a
+        href="https://t.me/jichangw"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hidden md:inline-flex items-center justify-center rounded border border-slate-300 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
+      >
+        TG频道
+      </a>
+    </div>
+  </div>
+</header>

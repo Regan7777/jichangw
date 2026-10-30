@@ -1,0 +1,135 @@
+---
+const airports = [
+  {
+    name: '神行加速',
+    tag: '透传中转 / 家宽落地',
+    price: '23元/月 (年付96元)',
+    unlock: 'ChatGPT / 住宅家宽落地',
+    scene: 'AI生产力 / 跨国办公 / 外贸',
+    coupon: 'sx0077 (新客7折)',
+    url: '/go/shenxing',
+    reviewUrl: '/articles/shenxing-airport-review-2026',
+  },
+  {
+    name: '大佬云',
+    tag: 'BGP动态中继',
+    price: '19.9元/月 (多档位)',
+    unlock: '全节点流媒体',
+    scene: '大流量4K影音 / 软路由',
+    coupon: 'dly888 (首单7折)',
+    url: '/go/dalaoyun',
+    reviewUrl: '/articles/dalaoyun-airport-review-2026',
+  },
+  {
+    name: '闪电鼠',
+    tag: 'VLESS纯专线',
+    price: '22元/月 (年付96元)',
+    unlock: '原生机房IP / Claude',
+    scene: 'IP纯净度 / 账号防封',
+    coupon: 'sd88 (首购7折)',
+    url: '/go/shandianshu',
+    reviewUrl: '/articles/shandianshu-airport-review-2026',
+  },
+  {
+    name: '榴莲云',
+    tag: '多线BGP防QoS',
+    price: '24元/月 (年付96元)',
+    unlock: '主流流媒体全解',
+    scene: '移动与联通宽带 / 弱网穿透',
+    coupon: 'll88 (新人7折)',
+    url: '/go/liulianyun',
+    reviewUrl: '/articles/liulianyun-airport-review-2026',
+  },
+  {
+    name: '环球梯',
+    tag: '全球冷门多地区',
+    price: '22元/月 (支持按量)',
+    unlock: '各区本地特色流媒体',
+    scene: '海外内购 / 小众国家业务',
+    coupon: 'HQ66 (新客立减)',
+    url: '/go/huanqiuti',
+    reviewUrl: '/articles/huanqiuti-airport-review-2026',
+  },
+  {
+    name: '云界线',
+    tag: '全IPLC专线',
+    price: '22元/月 (年付96元)',
+    unlock: 'TikTok / Disney+全解',
+    scene: '多设备不限在线 / 综合浏览',
+    coupon: '年付96元直降',
+    url: '/go/yunjiexian',
+    reviewUrl: '/articles/yunjiexian-airport-review-2026',
+  },
+  {
+    name: '飞V',
+    tag: '极简入门中继',
+    price: '12元/月 (学生档位)',
+    unlock: '常见视频网站',
+    scene: '预算敏感 / 基础出海查阅',
+    coupon: 'flyv999 (立减券)',
+    url: '/go/flyv',
+    reviewUrl: '/articles/flyv-airport-review-2026',
+  },
+  {
+    name: '灵动云',
+    tag: 'BGP专线/多协议',
+    price: '20元/月 (年付99元)',
+    unlock: 'ChatGPT / 主流流媒体',
+    scene: 'Hysteria2尝鲜 / 备用流量包',
+    coupon: 'ldy88 (特惠抵扣)',
+    url: '/go/lingdongyun',
+    reviewUrl: '/articles/lingdongyun-airport-review-2026',
+  },
+];
+---
+
+<div class="overflow-x-auto border border-slate-200 rounded-lg bg-white shadow-sm">
+  <table class="w-full text-left text-xs border-collapse">
+    <thead>
+      <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold">
+        <th class="py-3 px-3.5">服务商名称</th>
+        <th class="py-3 px-3.5">线路类型</th>
+        <th class="py-3 px-3.5">参考资费</th>
+        <th class="py-3 px-3.5">流媒体与AI支持</th>
+        <th class="py-3 px-3.5">推荐适用场景</th>
+        <th class="py-3 px-3.5">实时核验优惠码</th>
+        <th class="py-3 px-3.5 text-right">核验报告 / 通道</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100">
+      {airports.map((item) => (
+        <tr class="hover:bg-slate-50/80 transition-colors">
+          <td class="py-3 px-3.5 font-medium text-slate-900 flex items-center gap-1.5 whitespace-nowrap">
+            <span class="h-1.5 w-1.5 rounded-full bg-slate-900"></span>
+            <span>{item.name}</span>
+          </td>
+          <td class="py-3 px-3.5 font-mono text-slate-600 whitespace-nowrap">{item.tag}</td>
+          <td class="py-3 px-3.5 text-slate-700 font-mono whitespace-nowrap">{item.price}</td>
+          <td class="py-3 px-3.5 text-slate-600">{item.unlock}</td>
+          <td class="py-3 px-3.5 text-slate-500">{item.scene}</td>
+          <td class="py-3 px-3.5 whitespace-nowrap">
+            <span class="inline-flex items-center font-mono text-[11px] bg-slate-50 border border-dashed border-slate-300 px-2 py-0.5 rounded text-slate-800 font-semibold">
+              {item.coupon}
+            </span>
+          </td>
+          <td class="py-3 px-3.5 text-right space-x-1.5 whitespace-nowrap">
+            <a
+              href={item.reviewUrl}
+              class="inline-block px-2 py-1 text-[11px] rounded border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+            >
+              详细报告
+            </a>
+            <a
+              href={item.url}
+              target="_blank"
+              rel="sponsored noopener noreferrer"
+              class="inline-block px-2.5 py-1 text-[11px] font-medium rounded bg-slate-900 text-white hover:bg-slate-800 transition-colors"
+            >
+              官网通道
+            </a>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

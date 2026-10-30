@@ -1,0 +1,51 @@
+---
+const errors = [
+  {
+    error: '连上节点但无网络 / ERR_CONNECTION_RESET',
+    cause: '本地系统时间与网络授时偏差超过60秒，导致TLS证书握手验证完全失败。',
+    solution: '在操作系统设置中打开“自动设置时间”，点击“立即同步”确保本地毫秒级对齐。',
+  },
+  {
+    error: 'Windows系统提示 10054 Connection Reset',
+    cause: '杀毒软件防火墙拦截Mihomo本地端口；或软件非正常退出导致系统代理注册表残留。',
+    solution: '退出防护软件；在客户端重新开关一次“System Proxy”或手动清空IE代理设置。',
+  },
+  {
+    error: 'TUN虚拟网卡开启后局域网失联',
+    cause: 'TUN驱动与物理网卡发生跃点数冲突，或物理网卡开启IPv6引发DNS解析泄漏。',
+    solution: '在客户端TUN设置中切换为gVisor堆栈，并在物理网卡属性中关闭IPv6支持。',
+  },
+  {
+    error: '订阅链接导入报错 500 / Network Timeout',
+    cause: '本地网络无法直连机场托管服务器，或订阅转换公共API服务遭遇临时宕机。',
+    solution: '导入前临时开启全局代理模式；或在站内【实用工具】选用备用高可用订阅转换节点。',
+  },
+  {
+    error: '访问ChatGPT提示 Access Denied / 403',
+    cause: '节点当前落地公网出口IP被目标平台风控系统标记（风险欺诈分过高）。',
+    solution: '切换至具备住宅家宽或原生机房IP的高质量节点，并清除浏览器Cookie与DNS缓存。',
+  },
+];
+---
+
+<div class="overflow-x-auto border border-slate-200 rounded-lg bg-white">
+  <table class="w-full text-left text-xs border-collapse">
+    <thead>
+      <tr class="bg-slate-50 border-b border-slate-200 text-slate-700 font-semibold">
+        <th class="py-3 px-3.5 w-1/4">常见报错现象与关键词</th>
+        <th class="py-3 px-3.5 w-1/3">底层产生原因分析</th>
+        <th class="py-3 px-3.5">针对性排除解决方案</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-slate-100 text-slate-600">
+      {errors.map((item) => (
+        <tr class="hover:bg-slate-50/60">
+          <td class="py-3 px-3.5 font-mono font-medium text-slate-900">{item.error}</td>
+          <td class="py-3 px-3.5 leading-relaxed">{item.cause}</td>
+          <td class="py-3 px-3.5 text-slate-800 leading-relaxed font-sans">{item.solution}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+

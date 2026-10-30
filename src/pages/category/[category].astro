@@ -1,0 +1,418 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const categories = ['pingce', 'jiaocheng', 'tools', 'risk'];
+  return categories.map((cat) => ({
+    params: { category: cat },
+  }));
+}
+
+const { category } = Astro.params;
+const allPosts = await getCollection('posts');
+const categoryPosts = allPosts
+  .filter((p) => p.data.category === category)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const categoryNames: Record<string, string> = {
+  pingce: '机场横向与深度评测',
+  jiaocheng: '客户端配置与分流教程',
+  tools: '网络诊断与极客工具',
+  risk: '服务商异常与避坑预警',
+};
+
+const categoryDescriptions: Record<string, string> = {
+  pingce: '收录关于主流跨境网络服务商的官方技术资料整理、网络架构解析与实时资费核验。',
+  jiaocheng: '涵盖主流桌面与移动客户端的完整配置指引、分流规则优化、TUN虚拟网卡接管与高频故障排查。',
+  tools: '精选网络测速、路由追踪、分流转换与风控检测等高频极客工具箱。',
+  risk: '客观披露行业不确定性、拆解大促割韭菜套路、建立物理级灾备与理性网络消费机制。',
+};
+
+// 专题编撰初衷、核心技术哲学与选型要诀卡片数据
+const categoryManifestos: Record<string, {
+  tag: string;
+  badge: string;
+  title: string;
+  mission: string;
+  viewpoints: Array<{
+    title: string;
+    desc: string;
+  }>;
+  takeaway: string;
+}> = {
+  jiaocheng: {
+    tag: '专栏导读',
+    badge: '技术初衷与核心准则',
+    title: '客户端配置专栏设立初衷与四大底层分流哲学',
+    mission: '互联网充斥着大量从数年前反复抄袭、协议配置陈旧、甚至暗藏第三方木马后门的过时客户端教程。很多新手用户在安装客户端后，要么盲目开启全局代理导致国内银行账户遭遇异地风控冻结，要么遭遇 TUN 网卡与系统开发虚拟环境（如 WSL2、Docker）严重冲突。我们编写这套全平台教程的初衷，是为极客与出海团队提供零商业推广、直接可落地的开源客户端实战指南。',
+    viewpoints: [
+      {
+        title: '分流优于全局（Rule > Global）',
+        desc: '严禁将日常流量与国内金融、政务、社交资产走境外代理。通过严密的 GEOIP 与域名规则集，实现境内直连、境外加速、敏感直通的清晰流量边界。',
+      },
+      {
+        title: '拥抱现代加密协议（Protocol Modernization）',
+        desc: '全面淘汰易受特征识别的旧式明文或旧特征协议，主力推荐 VLESS (Reality / Vision) 与 Shadowsocks 2022，杜绝主动嗅探与 GFW 阻断。',
+      },
+      {
+        title: '规范虚拟网卡分流（TUN Virtual Adapter）',
+        desc: '理清操作系统应用级系统代理（System Proxy）与内核级 TUN 虚拟网卡接管的本质差异，解决 WSL2、Docker 与跨平台终端环境断网隐患。',
+      },
+      {
+        title: '双订阅物理级灾备（Zero Single Point of Failure）',
+        desc: '任何客户端配置中，必须常备主生产力专线与轻量不限时备用包双订阅，配置 Fallback 故障转移策略组，彻底终结单点网络中断。',
+      },
+    ],
+    takeaway: '选型速查：iOS 闭眼选 Shadowrocket；Win/Mac 深度生产力首选 Clash Verge Rev 或 Mihomo Party；安卓手机推荐 v2rayNG；家庭极客首推 OpenClash；进阶跨平台极客推荐 Sing-box。',
+  },
+  pingce: {
+    tag: '评测准则',
+    badge: '评测初衷与核验法则',
+    title: '机场横向与公开规格核验准则与理性选型法则',
+    mission: '很多跨境网络宣传充斥着虚高跑分图表与虚标专线话术，真实可用性被过度包装严重掩盖。机场网立站宗旨是“您身边的机场评测专家”，我们坚持不编造无来源测速数据，只整理服务商官方公开白皮书，实时核验官网可达性与优惠码有效性，提倡读者立足本地网络环境理性月付自测。',
+    viewpoints: [
+      {
+        title: '拒绝虚假跑分，倡导本地实测（Local Test Truth）',
+        desc: '网络质量强依赖用户本地宽带与运营商路由。本站暂无开展端到端独立网络测速采样，拒绝千篇一律的伪测速图表，坚持以官方公开交付规格与用户本地实际体验为准。',
+      },
+      {
+        title: '住宅家宽落地价值重于单纯低价',
+        desc: '大模型与出海电商平台对数据中心机房 IP 拦截率极高。具备住宅家宽落地出口或极低风控分数的节点，才是海外业务资产安全的定海神针。',
+      },
+      {
+        title: '坚持月付小额订阅，拒绝大额资金沉淀',
+        desc: '跨境代理受外部监管与机房运维波动影响，具备天然不可抗力。我们坚决劝阻读者购买两年付、三年付或“终身包”，将资金风险锁死在单月范围内。',
+      },
+      {
+        title: '分类梯队清晰分工，拒绝单一全能神话',
+        desc: '没有完美的单一服务商。主力生产力选用专线或高速透传中转（如神行加速/云界线），高码率影音选动态中继（如大佬云），日常常备低门槛备用（如飞V/灵动云）。',
+      },
+    ],
+    takeaway: '购买提示：请务必配合站内专属优惠码（如神行加速 sx0077、大佬云 dly888 等）在结账页面兑换真实折扣，且坚持优先按月续费。',
+  },
+  tools: {
+    tag: '排障指引',
+    badge: '工具初衷与排障方法',
+    title: '极客网络诊断工具箱设立初衷与链路真假鉴别准则',
+    mission: '当网络遭遇卡顿、降速或无法连接时，小白用户往往束手无策，或轻易被黑心商家的“上游网络抖动”等借口推诿。我们设立极客工具箱的初衷，是把网络黑盒透明化，让每一位普通读者都能借助标准开源工具，一分钟厘清故障源头在本地、运营商还是服务商节点。',
+    viewpoints: [
+      {
+        title: '区分 ICMP Ping 与 TCP/HTTP 真实握手',
+        desc: '很多不良服务商在入口机房部署伪造 ICMP 回包（本地 Ping 几毫秒但网页打不开）。必须以实际 TCP 握手与真实 TLS 握手握时为唯一准则。',
+      },
+      {
+        title: '利用 NextTrace 刺破“伪专线”谎言',
+        desc: '在客户端连接节点后向 1.1.1.1 发起回程路由追踪。若经过公网 202.97 或 59.43 骨干出口并发生数十毫秒跃迁，即可判定所谓“IPLC 专线”为虚标假专线。',
+      },
+      {
+        title: '量化 IP 欺诈分，护航海外账号安全',
+        desc: '使用 Scamalytics 与 IP2Location 工具定期检测节点风险值。欺诈分高于 20 分的节点坚决不用来登录重要账号，防止异地封号风险。',
+      },
+      {
+        title: '科学管理规则分流集与订阅转换安全',
+        desc: '警惕第三方公共订阅转换后端窃取节点信息。提倡使用本地开源内核直接解析订阅，并保持 ACL4SSR / Loyalsoldier 规则集动态更新。',
+      },
+    ],
+    takeaway: '排障法则：遇到断流，先查系统本地时间是否同步 -> 再查 TUN 虚拟网卡状态 -> 再用 NextTrace 查回程跳数，三步之内即可锁定问题根因。',
+  },
+  risk: {
+    tag: '风控准则',
+    badge: '风控哲学与避坑准则',
+    title: '服务商异常预警专栏初衷与五大财产防御哲学',
+    mission: '跨境代理行业缺乏法律约束与信用兜底，商家跑路、暗改倍率、虚标专线屡见不鲜。我们在阳光下公开跑路前兆与监控指标，旨在帮助出海用户与技术从业者建立清醒、理性的防御机制，让黑心灰产无所遁形。',
+    viewpoints: [
+      {
+        title: '没有永不跑路的机场，只有未雨绸缪的财务管理',
+        desc: '无论服务商如何吹嘘其运营年限，坚决拒绝大额资金沉淀。坚持月付或季度订阅，是将不可控外部风险成本降至最低的绝对真理。',
+      },
+      {
+        title: '警惕大促跑路资金盘信号',
+        desc: '在无重大节日背景下突然在群内密集推送“充值三年送三年”、“299元终身不限量”等非理性超低价促销，通常是上游机房欠费或跑路前的资金回流陷阱。',
+      },
+      {
+        title: '境内金融资产与境外节点物理绝缘',
+        desc: '严禁在代理状态下访问银行网银、个人公积金、实名个税及社保系统。不仅存在流量被嗅探隐患，更会触发金融级反洗钱与异地盗号风控冻结。',
+      },
+      {
+        title: '建立主备双链路冗余容灾方案',
+        desc: '本地客户端常备主力专线与不限时轻量备用包双订阅。当主线路光缆割接时毫秒级平滑切换，彻底避免工作失联。',
+      },
+    ],
+    takeaway: '维权指南：若遭遇服务商跑路，立即停止追加充值，保留支付凭证向支付渠道发起申诉，并在本地切换备用订阅恢复生产力。',
+  },
+};
+
+const manifesto = categoryManifestos[category] || null;
+const title = `${categoryNames[category] || '分类归档'} · 机场网`;
+const desc = categoryDescriptions[category] || `收录关于${categoryNames[category]}的官方技术资料与技术指引。`;
+
+// 客户端快速跳转定义
+const clientQuickLinks = [
+  { name: 'iOS (小火箭)', url: '/articles/shadowrocket-tutorial-2026', core: 'Shadowrocket' },
+  { name: 'Win / Mac (Clash Verge Rev)', url: '/articles/clash-verge-rev-tutorial-2026', core: 'Mihomo 内核' },
+  { name: 'Windows (v2rayN)', url: '/articles/v2rayn-tutorial-2026', core: '经典跨协议' },
+  { name: 'Android (v2rayNG)', url: '/articles/v2rayng-tutorial-2026', core: '安卓轻量端' },
+  { name: 'Mac / Win (Mihomo Party)', url: '/articles/mihomo-party-tutorial-2026', core: '可视化UI' },
+  { name: 'OpenWrt (软路由)', url: '/articles/openclash-tutorial-2026', core: '网关级分流' },
+  { name: '全平台 (Sing-box)', url: '/articles/sing-box-guide', core: '现代轻量核' },
+];
+
+// 辅助函数：根据文章标题与标签匹配平台标签与徽章样式
+function getBadgeInfo(post: any) {
+  const title = post.data.title || '';
+  const tags = (post.data.tags || []).join(' ');
+  const text = `${title} ${tags}`;
+
+  if (/Shadowrocket|小火箭|iOS/i.test(text)) {
+    return { label: 'iOS 苹果端', class: 'bg-blue-50 text-blue-700 border-blue-200' };
+  }
+  if (/Clash Verge|Verge Rev/i.test(text)) {
+    return { label: 'Win / Mac 桌面端', class: 'bg-emerald-50 text-emerald-700 border-emerald-200' };
+  }
+  if (/v2rayN/i.test(text)) {
+    return { label: 'Windows 经典端', class: 'bg-sky-50 text-sky-700 border-sky-200' };
+  }
+  if (/v2rayNG/i.test(text)) {
+    return { label: 'Android 安卓端', class: 'bg-teal-50 text-teal-700 border-teal-200' };
+  }
+  if (/Mihomo Party/i.test(text)) {
+    return { label: '跨平台 UI', class: 'bg-indigo-50 text-indigo-700 border-indigo-200' };
+  }
+  if (/OpenClash|软路由/i.test(text)) {
+    return { label: 'OpenWrt 路由', class: 'bg-amber-50 text-amber-700 border-amber-200' };
+  }
+  if (/Sing-box/i.test(text)) {
+    return { label: '全平台内核', class: 'bg-purple-50 text-purple-700 border-purple-200' };
+  }
+
+  // 评测文章徽章
+  if (/横向|终极指南/i.test(text)) {
+    return { label: '年度综合盘点', class: 'bg-emerald-50 text-emerald-700 border-emerald-200 font-semibold' };
+  }
+  if (/神行加速|大佬云|闪电鼠|榴莲云|环球梯|云界线|飞V|灵动云/i.test(text)) {
+    return { label: '服务商核验报告', class: 'bg-slate-100 text-slate-700 border-slate-200' };
+  }
+
+  return { label: post.data.category.toUpperCase(), class: 'bg-slate-100 text-slate-700 border-slate-200' };
+}
+---
+
+<BaseLayout title={title} description={desc}>
+  <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 space-y-8">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-2 text-xs font-mono text-slate-400">
+      <a href="/" class="hover:text-slate-900 transition-colors">首页</a>
+      <span>/</span>
+      <span>分类归档</span>
+      <span>/</span>
+      <span class="text-slate-900 font-medium">{categoryNames[category]}</span>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="border-b border-slate-200 pb-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <div class="text-xs font-mono text-slate-400 mb-1 tracking-wider">分类专栏</div>
+          <h1 class="text-2xl font-bold text-slate-900 sm:text-3xl tracking-tight">
+            {categoryNames[category]}
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed max-w-3xl">
+            {desc}
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <span class="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-mono text-slate-600">
+            <span>共收录</span>
+            <strong class="text-slate-900 font-bold">{categoryPosts.length}</strong>
+            <span>篇指南</span>
+          </span>
+          <span class="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-mono text-emerald-800">
+            <span class="h-1.5 w-1.5 rounded-full bg-emerald-600"></span>
+            <span>2026 动态核验</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Quick Platform Jump for Jiaocheng (Direct Clickable Links) -->
+      {category === 'jiaocheng' && (
+        <div class="mt-6 pt-4 border-t border-slate-100">
+          <div class="text-[11px] font-mono text-slate-400 mb-2 uppercase tracking-wide">
+            快速跳转至对应客户端配置指南：
+          </div>
+          <div class="flex flex-wrap items-center gap-2 text-xs">
+            {clientQuickLinks.map((c) => (
+              <a
+                href={c.url}
+                class="px-2.5 py-1 bg-slate-100 hover:bg-slate-900 hover:text-white text-slate-700 rounded-md font-medium text-[11px] border border-slate-200 transition-colors inline-flex items-center gap-1"
+              >
+                <span>{c.name}</span>
+                <span class="text-[9px] opacity-70">({c.core})</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </header>
+
+    <!-- Editorial Manifesto & Core Viewpoints Card -->
+    {manifesto && (
+      <section class="border border-slate-200 rounded-xl bg-slate-50/70 p-6 sm:p-7 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-200">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 text-[10px] font-mono font-bold bg-slate-900 text-white rounded">
+              {manifesto.tag}
+            </span>
+            <span class="text-xs font-semibold text-slate-700">
+              {manifesto.badge}
+            </span>
+          </div>
+          <span class="text-xs font-mono text-slate-400">
+            机场网评测实验室 (JICHANGW Lab)
+          </span>
+        </div>
+
+        <h2 class="text-lg sm:text-xl font-bold text-slate-900 mb-3 tracking-tight">
+          {manifesto.title}
+        </h2>
+
+        <div class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6 bg-white p-4 rounded-lg border border-slate-200 shadow-2xs">
+          <strong class="text-slate-900">编撰初衷与行业背景：</strong>
+          {manifesto.mission}
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+          {manifesto.viewpoints.map((vp, idx) => (
+            <div class="border border-slate-200 bg-white rounded-lg p-4 space-y-1.5 hover:border-slate-300 transition-colors">
+              <div class="flex items-center gap-2 text-xs font-mono text-slate-400">
+                <span class="font-bold text-slate-900">TENET 0{idx + 1}</span>
+                <span>/</span>
+                <span class="font-bold text-slate-800 font-sans">{vp.title}</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                {vp.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div class="pt-3 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-slate-500">
+          <p class="leading-relaxed">
+            <strong class="text-slate-800">极客实战要诀：</strong>
+            {manifesto.takeaway}
+          </p>
+          <span class="shrink-0 font-mono text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">
+            2026 体系重构已就绪
+          </span>
+        </div>
+      </section>
+    )}
+
+    <!-- Cards Grid -->
+    {categoryPosts.length === 0 ? (
+      <div class="border border-dashed border-slate-300 rounded-xl p-12 text-center bg-slate-50/50">
+        <p class="text-sm text-slate-500 font-mono">暂无收录文章</p>
+        <p class="text-xs text-slate-400 mt-1">相关评测与指引正在整理核验中，请稍后查阅。</p>
+        <div class="mt-4">
+          <a href="/" class="text-xs font-semibold text-slate-900 underline underline-offset-4">
+            返回首页查阅天梯大盘 →
+          </a>
+        </div>
+      </div>
+    ) : (
+      <div class="space-y-4">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-100 text-xs">
+          <span class="font-bold text-slate-900 font-mono">
+            收录指南与文章列表
+          </span>
+          <span class="text-slate-400 font-mono text-[11px]">
+            点击卡片查阅详细配置与核验参数
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {categoryPosts.map((post) => {
+            const badge = getBadgeInfo(post);
+            const postSlug = post.slug.replace(/^articles\//, '');
+            const pubDateStr = post.data.pubDate.toISOString().split('T')[0];
+
+            return (
+              <article class="group relative flex flex-col justify-between border border-slate-200 rounded-xl bg-white p-5 hover:border-slate-400 hover:shadow-md transition-all duration-200">
+                <!-- Top Row: Badge & Date -->
+                <div>
+                  <div class="flex items-center justify-between gap-2 mb-3">
+                    <span class={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono border ${badge.class}`}>
+                      {badge.label}
+                    </span>
+                    <span class="text-[11px] font-mono text-slate-400">
+                      {pubDateStr}
+                    </span>
+                  </div>
+
+                  <!-- Title -->
+                  <h2 class="text-base font-bold text-slate-900 group-hover:text-blue-600 sm:group-hover:text-slate-900 transition-colors line-clamp-2 leading-snug">
+                    <a href={`/articles/${postSlug}`} class="before:absolute before:inset-0 focus:outline-none">
+                      {post.data.title}
+                    </a>
+                  </h2>
+
+                  <!-- Description -->
+                  <p class="text-xs text-slate-500 leading-relaxed line-clamp-3 mt-2.5">
+                    {post.data.description}
+                  </p>
+                </div>
+
+                <!-- Bottom Row: Tags & Action -->
+                <div class="mt-5 pt-3 border-t border-slate-100">
+                  {post.data.tags && post.data.tags.length > 0 && (
+                    <div class="flex flex-wrap gap-1.5 mb-3">
+                      {post.data.tags.slice(0, 3).map((tag: string) => (
+                        <span class="bg-slate-50 text-slate-600 text-[10px] font-mono px-2 py-0.5 rounded border border-slate-100">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <div class="flex items-center justify-between text-xs pt-1">
+                    <span class="font-mono text-[10px] text-slate-400 uppercase">
+                      2026 VERIFIED
+                    </span>
+                    <span class="font-semibold text-slate-900 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                      查阅完整配置 →
+                    </span>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    )}
+
+    <!-- Bottom Secondary Navigation Banner -->
+    <div class="mt-8 border border-slate-200 rounded-xl p-5 bg-slate-50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-xs">
+      <div>
+        <h3 class="font-bold text-slate-900 mb-0.5">找不到您所需的客户端教程或评测？</h3>
+        <p class="text-slate-500 text-[11px]">
+          我们持续对主流网络工具与专线机场进行长周期晚高峰压测采样。
+        </p>
+      </div>
+      <div class="flex items-center gap-3 shrink-0">
+        <a
+          href="/tools"
+          class="px-3 py-1.5 border border-slate-300 rounded-lg bg-white text-slate-700 hover:bg-slate-50 font-medium transition-colors"
+        >
+          打开实用工具箱
+        </a>
+        <a
+          href="/risk"
+          class="px-3 py-1.5 border border-slate-900 rounded-lg bg-slate-900 text-white hover:bg-slate-800 font-medium transition-colors"
+        >
+          阅读避坑指南
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,50 @@
+---
+import { affiliates } from '../../data/affiliates';
+
+export function getStaticPaths() {
+  return Object.values(affiliates).map((item) => ({
+    params: { airport: item.id },
+    props: { affiliate: item },
+  }));
+}
+
+const { affiliate } = Astro.props;
+---
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>正在安全前往 {affiliate.name} 官方通道 · 机场网</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta http-equiv="refresh" content={`0;url=${affiliate.targetUrl}`} />
+  <link rel="canonical" href={affiliate.targetUrl} />
+  <script define:vars={{ targetUrl: affiliate.targetUrl }}>
+    // Instant JS redirect to bypass crawler delay
+    if (typeof window !== 'undefined') {
+      window.location.replace(targetUrl);
+    }
+  </script>
+</head>
+<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background-color: #f8fafc; color: #334155;">
+  <div style="text-align: center; padding: 36px 32px; border: 1px solid #e2e8f0; border-radius: 12px; background: #ffffff; max-width: 420px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+    <div style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; background: #0f172a; color: #ffffff; font-weight: 700; font-size: 14px; margin-bottom: 16px;">
+      JCW
+    </div>
+    <h1 style="font-size: 17px; font-weight: 700; color: #0f172a; margin: 0 0 8px;">
+      正在前往 {affiliate.name} 官方通道
+    </h1>
+    <p style="font-size: 12px; color: #64748b; margin: 0 0 16px; line-height: 1.6;">
+      专属核验优惠码：<strong style="color: #0f172a; font-family: monospace; background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">{affiliate.coupon}</strong><br />
+      系统正在为您自动调度安全加密镜像与折扣通道...
+    </p>
+    <a
+      href={affiliate.targetUrl}
+      rel="sponsored noopener noreferrer"
+      style="display: inline-block; padding: 10px 20px; background: #0f172a; color: #ffffff; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600;"
+    >
+      未自动跳转？点击立即直达 →
+    </a>
+  </div>
+</body>
+</html>
+
