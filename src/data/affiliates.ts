@@ -17,14 +17,14 @@ export const affiliates: Record<string, Affiliate> = {
   dalaoyun: {
     id: 'dalaoyun',
     name: '大佬云',
-    targetUrl: 'https://fugui0077.dalaoyunaff.com/#/?code=1o7gYhTL',
+    targetUrl: 'https://fugui0077.dalaoyunaff.com/#/?code=Wpfk4XD5',
     coupon: 'dly888',
     description: '四网动态 BGP 中继，大带宽流量池与流媒体支持',
   },
   shandianshu: {
     id: 'shandianshu',
     name: '闪电鼠',
-    targetUrl: 'https://fugui0077.shandianshuaff.com/#/?code=I2yK9PfK',
+    targetUrl: 'https://fugui0077.shandianshuaff.com/#/?code=KSByEAn9',
     coupon: 'sd88',
     description: '企业级纯专线隧道，VLESS 协议与 IP 纯净度防风控',
   },
