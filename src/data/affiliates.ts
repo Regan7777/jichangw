@@ -45,9 +45,16 @@ export const affiliates: Record<string, Affiliate> = {
   yunjiexian: {
     id: 'yunjiexian',
     name: '云界线',
-    targetUrl: 'https://fugui0077.yunjiexianaff.com/#/?code=qA3LF6hW',
+    targetUrl: 'https://fugui0077.yunjiexianaff.com/#/?code=FVkiFyAx',
     coupon: '年付96元免券直降',
     description: '全节点 IPLC 专线，全系不限在线设备数与流媒体解锁',
+  },
+  guangshuyun: {
+    id: 'guangshuyun',
+    name: '光速云',
+    targetUrl: 'https://j98j.gsyvipaff.com/#/?code=9506F5Sq',
+    coupon: '年付99元直降',
+    description: '全 IEPL/IPLC 专线，60+全球节点与多设备不限并发，99元/年高性价比',
   },
   flyv: {
     id: 'flyv',
