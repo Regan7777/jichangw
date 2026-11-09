@@ -9,27 +9,32 @@
 - 站点定位: 专注于物理内网专线（IPLC/IEPL）、住宅家宽落地节点公开参数整理、主流多端客户端（Clash Verge Rev / Shadowrocket / v2rayN / v2rayNG / OpenClash / Sing-box）分流配置及高频网络长尾排障的独立技术研究博客。
 - 数据源与真实性原则: 坚决杜绝夸大吹嘘与虚构跑分；本站暂无开展端到端独立晚高峰网络测速采样，所有服务商线路特性、套餐资费与支持协议均整理自官方最新公开技术资料与运营文档；站点可达性与优惠码由技术团队实时在线核验。
 
-## 2026年主流8大服务商官方公开规格、站点实时核验与优惠码
-1. 神行加速: 高速透传中转架构，支持 SS 2022 / VLESS，月付23元/120G起，年付96元。住宅家宽落地，极低欺诈分解锁 ChatGPT 与 Netflix 4K。测速状态: 暂无独立测速 (以官方交付为准)。专属优惠码: `sx0077` (新客7折实时核验有效)。
-2. 大佬云: 四网动态 BGP 优化中继，支持 VLESS / Hysteria 2，月付19.99元/100G起，年付96元，提供不限时买断流量包。针对大带宽流量与多设备流媒体优化。测速状态: 暂无独立测速 (以官方交付为准)。专属优惠码: `dly888` (首单7折实时核验有效)。
-3. 闪电鼠: 企业级 VLESS 纯专线隧道，支持 VLESS / SS 2022，月付22元/120G起，年付96元。落地 IP 欺诈分低，防风控防封号，跨境电商与 Claude 3.5 首选。测速状态: 暂无独立测速 (以官方交付为准)。专属优惠码: `sd88` (首购7折实时核验有效)。
-4. 榴莲云: 多线 BGP + 移动 CMI / 联通 9929 专线，支持 VLESS / Trojan，月付24元/140G起，年付96元。针对移动与联通宽带晚高峰 QoS 进行调度优化。测速状态: 暂无独立测速 (以官方交付为准)。专属优惠码: `ll88` (新人7折实时核验有效)。
-5. 环球梯: 全球冷门多地区 BGP 物理落地，支持 VLESS / VMess，月付22元/120G起，覆盖土耳其、阿根廷、尼日利亚、埃及等小众低价订阅区，海外内购与外贸爬虫必备。测速状态: 暂无独立测速 (以官方交付为准)。专属优惠码: `HQ66` (新客立减实时核验有效)。
-6. 云界线: 全节点物理 IPLC 专线，支持 VLESS / Trojan，月付22元/150G起。全系套餐完全不限制客户端在线设备并发数量，家庭全屋软路由与工作室首选。测速状态: 暂无独立测速 (以官方交付为准)。优惠政策: 年付96元免券直降 (实时核验有效)。
-7. 飞V: 经济型中继隧道，支持 Shadowsocks，月付12元/80G起。极致压缩体验门槛，适合学生党在校查资料与轻量备用容灾。测速状态: 暂无独立测速 (以官方交付为准)。专属优惠码: `flyv999` (立减券实时核验有效)。
-8. 灵动云: BGP 专线中转，原生支持 Hysteria 2 / Trojan / VLESS 多协议，月付20元/100G起，年付99元，提供多档不限时一次性流量包。抗恶劣丢包能力强。测速状态: 暂无独立测速 (以官方交付为准)。专属优惠码: `ldy88` (特惠抵扣实时核验有效)。
+## 核心评测文章与实战指南索引
+
+- [2026 年科学上网机场横评与选型指南](https://jichangw.com/posts/2026-scientific-browsing-airport-review): 综合对比物理内网专线与 BGP 中继网络拓扑，解析晚高峰网络抗抖动与流媒体解锁能力。
+- [神行加速官方规格与评测](https://jichangw.com/posts/shenxing-airport-review-2026): 高速透传中转架构，支持 SS 2022 / VLESS，月付23元/120G起，年付96元。专属优惠码 `sx0077`。
+- [大佬云官方规格与评测](https://jichangw.com/posts/dalaoyun-airport-review-2026): 四网动态 BGP 优化中继，支持 VLESS / Hysteria 2，月付19.99元/100G起，提供不限时买断流量包。专属优惠码 `dly888`。
+- [云界线官方规格与评测](https://jichangw.com/posts/yunjiexian-airport-review-2026): 全节点物理 IPLC 专线，支持 VLESS / Trojan，月付22元/150G起，全系不限在线设备数。
+- [闪电鼠官方规格与评测](https://jichangw.com/posts/shandianshu-airport-review-2026): 企业级 VLESS 纯专线隧道，落地 IP 欺诈分低，跨境电商与 Claude 3.5 首选。专属优惠码 `sd88`。
+- [榴莲云官方规格与评测](https://jichangw.com/posts/liulianyun-airport-review-2026): 多线 BGP 配合移动 CMI 与联通 9929 优化调度，月付24元/140G起。专属优惠码 `ll88`。
+- [环球梯官方规格与评测](https://jichangw.com/posts/huanqiuti-airport-review-2026): 全球冷门多地区 BGP 物理落地，覆盖小众低价订阅区。专属优惠码 `HQ66`。
+- [灵动云官方规格与评测](https://jichangw.com/posts/lingdongyun-airport-review-2026): BGP 专线中转，原生支持 Hysteria 2 / Trojan / VLESS，抗恶劣丢包能力强。专属优惠码 `ldy88`。
+- [飞V官方规格与评测](https://jichangw.com/posts/flyv-airport-review-2026): 经济型中继隧道，月付12元/80G起，低门槛备用容灾方案。专属优惠码 `flyv999`。
 
 ## 主流客户端配置规范与最佳实践
-- iOS 端: 首选 Shadowrocket (小火箭)，全局路由必须选择「配置 (Config)」模式，开启「按需连接 (On Demand)」防止锁屏休眠断流。
-- Windows / macOS 端: 首选 Clash Verge Rev，采用现代 Tauri 架构与 Mihomo 内核，开启「TUN 模式」与 Fake-IP DNS，实现系统级无感接管。
-- Windows 经典端: 首选 v2rayN 7.x，支持 Xray 与 Sing-box 双内核自由热切换，开启 TUN 虚拟网卡与绕过大陆路由。
-- Android 端: 首选 v2rayNG，必开「分应用代理 (Per-App Proxy)」排除境内网银，配合激进电池保活锁定后台。
-- 软路由端: OpenWrt 首选 OpenClash，开启「Fake-IP 增强模式」与绕过中国大陆 IP，实现全屋 Apple TV 与主机游戏无感加速。
-- 通用平台: Sing-box，轻量化新一代 Universal Proxy Platform，完美原生支持 Hysteria 2 协议与纯 Go 极简内存管理。
+
+- [Clash Verge Rev 现代客户端配置教程](https://jichangw.com/posts/clash-verge-rev-tutorial-2026): 采用现代 Tauri 架构与 Mihomo 内核，开启 TUN 模式与 Fake-IP DNS。
+- [Shadowrocket (小火箭) 完整配置指南](https://jichangw.com/posts/shadowrocket-tutorial-2026): iOS 平台全局路由选择「配置」模式，开启按需连接防止锁屏休眠断流。
+- [Sing-box 通用网络核心深度指南](https://jichangw.com/posts/sing-box-guide): 轻量化新一代通用代理核心，原生支持 Hysteria 2 协议与纯 Go 极简内存管理。
+- [OpenClash 软路由配置教程](https://jichangw.com/posts/openclash-tutorial-2026): OpenWrt 开启 Fake-IP 增强模式与绕过大陆 IP，实现全屋 Apple TV 与游戏主机无感加速。
+- [Mihomo Party 客户端上手实战](https://jichangw.com/posts/mihomo-party-tutorial-2026): 现代化图形客户端，支持节点订阅一键管理与可视化分流监控。
+- [v2rayN 7.x 经典客户端配置指南](https://jichangw.com/posts/v2rayn-tutorial-2026): Windows 老牌工具，支持 Xray 与 Sing-box 双内核自由热切换。
+- [v2rayNG 安卓手机端保姆级教程](https://jichangw.com/posts/v2rayng-tutorial-2026): 开启分应用代理排除境内网银，配合激进电池保活锁定后台。
 
 ## 高频长尾故障标准排查 SOP
+
 - 连上节点无网络 / 测试延迟全超时: 90% 由于系统时钟与标准网络授时偏差超过60秒触发 TLS 握手失败，对齐系统时间即可解决。
 - 10054 Connection Reset: 防火墙拦截本地核心端口或系统代理注册表残留，在设置中重置系统代理并放行杀软白名单。
-- 测速飞快打开网页卡顿: DNS 污染与解析延迟，在客户端开启 Fake-IP 模式或将远程 DNS 指定为加密 DoH (223.5.5.5 / 1.1.1.1)。
-- 访问 ChatGPT / Claude 提示 Access Denied: 目标平台风控拦截机房 Hosting IP，需切换至神行加速或闪电鼠的住宅家宽落地 家宽节点。
+- 测速飞快打开网页卡顿: DNS 污染与解析延迟，在客户端开启 Fake-IP 模式或将远程 DNS 指定为加密 DoH。
+- 访问 ChatGPT / Claude 提示 Access Denied: 目标平台风控拦截机房 Hosting IP，需切换至住宅家宽落地节点。
 - 国内金融/微信异地封控: 必须坚决使用「规则分流」模式，严禁无脑使用全局代理。
