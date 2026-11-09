@@ -45,6 +45,7 @@ async function submitIndexNow() {
   };
 
   const endpoints = [
+    'https://yandex.com/indexnow',
     'https://api.indexnow.org/indexnow',
     'https://www.bing.com/indexnow'
   ];
