@@ -1,9 +1,11 @@
 // IndexNow URL submission script for jichangw.com
 // Uses Node 18+ native fetch
 
-const KEY = '7ec54bed5e684bee9e50ea059b0e5538';
 const HOST = 'jichangw.com';
-const KEY_LOCATION = `https://${HOST}/${KEY}.txt`;
+
+// Official verified keys
+const BING_KEY = '8BEA8052606A0C15AACD9FF35D7E6180';
+const YANDEX_KEY = '7ec54bed5e684bee9e50ea059b0e5538';
 
 // All indexable canonical pages (excluding /go/ affiliate redirects)
 const URLS = [
@@ -35,25 +37,25 @@ const URLS = [
   `https://${HOST}/articles/openclash-tutorial-2026/`
 ];
 
+const TARGETS = [
+  { endpoint: 'https://www.bing.com/indexnow', key: BING_KEY },
+  { endpoint: 'https://api.indexnow.org/indexnow', key: BING_KEY },
+  { endpoint: 'https://yandex.com/indexnow', key: YANDEX_KEY }
+];
+
 async function submitIndexNow() {
-  console.log(`Submitting ${URLS.length} URLs to IndexNow (Bing / Yandex)...`);
-  
-  const payload = {
-    host: HOST,
-    key: KEY,
-    keyLocation: KEY_LOCATION,
-    urlList: URLS
-  };
+  console.log(`Submitting ${URLS.length} URLs to IndexNow (Bing / api.indexnow.org / Yandex)...`);
 
-  const endpoints = [
-    'https://yandex.com/indexnow',
-    'https://api.indexnow.org/indexnow',
-    'https://www.bing.com/indexnow'
-  ];
+  for (const { endpoint, key } of TARGETS) {
+    const payload = {
+      host: HOST,
+      key: key,
+      keyLocation: `https://${HOST}/${key}.txt`,
+      urlList: URLS
+    };
 
-  for (const endpoint of endpoints) {
     try {
-      console.log(`Sending to: ${endpoint}`);
+      console.log(`Sending to: ${endpoint} (key: ${key.slice(0, 8)}...)`);
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -64,7 +66,7 @@ async function submitIndexNow() {
 
       console.log(`Response status [${endpoint}]:`, response.status, response.statusText);
       if (response.status === 200 || response.status === 202) {
-        console.log(`Successfully submitted to ${endpoint}`);
+        console.log(`✓ Successfully submitted to ${endpoint}`);
       } else {
         const text = await response.text();
         console.log(`Server response:`, text || '(empty)');
@@ -76,4 +78,3 @@ async function submitIndexNow() {
 }
 
 submitIndexNow();
-
