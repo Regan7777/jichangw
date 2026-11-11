@@ -1,4 +1,6 @@
 ---
+import Logo from './Logo.astro';
+
 const currentYear = new Date().getFullYear();
 ---
 
@@ -6,8 +8,8 @@ const currentYear = new Date().getFullYear();
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
     <div class="grid grid-cols-1 gap-8 md:grid-cols-4">
       <div class="md:col-span-2 space-y-3">
-        <div class="flex items-center gap-2 text-sm font-semibold text-slate-900">
-          <span class="inline-block h-2.5 w-2.5 bg-slate-900"></span>
+        <div class="flex items-center gap-2.5 text-sm font-semibold text-slate-900">
+          <Logo size="sm" />
           <span class="font-bold">机场网</span>
           <span class="text-xs text-slate-400 font-normal">· 您身边的机场评测专家</span>
         </div>
@@ -45,7 +47,7 @@ const currentYear = new Date().getFullYear();
       <div class="flex gap-4 mt-2 sm:mt-0 font-mono">
         <a href="/sitemap-index.xml" class="hover:text-slate-900">SITEMAP</a>
         <a href="/llms.txt" class="hover:text-slate-900">LLMS.TXT</a>
-        <a href="https://t.me/jichangw" target="_blank" rel="noopener noreferrer" class="hover:text-slate-900">TELEGRAM</a>
+        <a href="https://t.me/wanfengzn7" target="_blank" rel="noopener noreferrer" class="hover:text-slate-900">TELEGRAM</a>
       </div>
     </div>
   </div>

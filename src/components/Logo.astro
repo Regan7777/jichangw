@@ -1,0 +1,54 @@
+---
+interface Props {
+  size?: 'sm' | 'md' | 'lg';
+  class?: string;
+  showText?: boolean;
+  showTagline?: boolean;
+}
+
+const {
+  size = 'md',
+  class: className = '',
+  showText = false,
+  showTagline = false,
+} = Astro.props;
+
+const badgeSizeClass = {
+  sm: 'h-6 w-6 rounded-md',
+  md: 'h-7 w-7 rounded-lg',
+  lg: 'h-9 w-9 rounded-xl',
+}[size];
+
+const iconSizeClass = {
+  sm: 'h-3.5 w-3.5',
+  md: 'h-4 w-4',
+  lg: 'h-5 w-5',
+}[size];
+---
+
+<div class={`inline-flex items-center gap-2.5 ${className}`}>
+  <div class={`flex ${badgeSizeClass} shrink-0 items-center justify-center bg-slate-900 text-white shadow-sm ring-1 ring-slate-900/10 transition-transform group-hover:scale-105`}>
+    <svg class={iconSizeClass} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Trajectory trail -->
+      <path d="M4.5 19.5L8.5 15.5" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="1.5 1.5" opacity="0.9" />
+      <circle cx="4.5" cy="19.5" r="1.2" fill="#10B981" />
+      <!-- Upper wing -->
+      <path d="M21.5 2.5L2.5 11L10 14L21.5 2.5Z" fill="#FFFFFF" />
+      <!-- Lower wing (shaded for depth) -->
+      <path d="M21.5 2.5L10 14L13 21.5L21.5 2.5Z" fill="#94A3B8" />
+      <!-- Crease -->
+      <path d="M10 14L21.5 2.5" stroke="#0F172A" stroke-width="0.75" />
+      <!-- Nose speed node -->
+      <circle cx="21.5" cy="2.5" r="1.2" fill="#10B981" />
+    </svg>
+  </div>
+  {showText && (
+    <div class="flex items-baseline gap-1.5">
+      <span class="font-bold text-slate-900 tracking-tight text-base">机场网</span>
+      {showTagline && (
+        <span class="hidden lg:inline text-xs text-slate-400 font-normal">| 您身边的机场评测专家</span>
+      )}
+    </div>
+  )}
+</div>
+

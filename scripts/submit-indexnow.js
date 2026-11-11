@@ -22,6 +22,7 @@ const URLS = [
   `https://${HOST}/articles/liulianyun-airport-review-2026/`,
   `https://${HOST}/articles/huanqiuti-airport-review-2026/`,
   `https://${HOST}/articles/yunjiexian-airport-review-2026/`,
+  `https://${HOST}/articles/guangshuyun-airport-review-2026/`,
   `https://${HOST}/articles/flyv-airport-review-2026/`,
   `https://${HOST}/articles/lingdongyun-airport-review-2026/`,
   // Tutorials
