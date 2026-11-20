@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const HOST = 'https://jichangw.com';
-const projectRoot = 'c:/Users/78432/Desktop/博客合集wuhan950706/jichangw.com机场网';
+const projectRoot = process.cwd();
 const postsDir = path.join(projectRoot, 'src/content/posts');
 const distDir = path.join(projectRoot, 'dist');
 const publicDir = path.join(projectRoot, 'public');

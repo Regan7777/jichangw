@@ -16,7 +16,7 @@ function getHtmlFiles(dir) {
   return results;
 }
 
-const distDir = 'c:/Users/78432/Desktop/博客合集wuhan950706/jichangw.com机场网/dist';
+const distDir = path.join(process.cwd(), 'dist');
 const files = getHtmlFiles(distDir);
 console.log('Total HTML pages found in dist:', files.length);
 
