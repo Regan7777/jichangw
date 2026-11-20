@@ -23,10 +23,10 @@ const categoryNames: Record<string, string> = {
 };
 
 const categoryDescriptions: Record<string, string> = {
-  pingce: '收录关于主流跨境网络服务商的官方技术资料整理、网络架构解析与实时资费核验。',
-  jiaocheng: '涵盖主流桌面与移动客户端的完整配置指引、分流规则优化、TUN虚拟网卡接管与高频故障排查。',
-  tools: '精选网络测速、路由追踪、分流转换与风控检测等高频极客工具箱。',
-  risk: '客观披露行业不确定性、拆解大促割韭菜套路、建立物理级灾备与理性网络消费机制。',
+  pingce: '2026年主流跨境网络与机场服务商全景横向深度评测专区。汇集神行加速、大佬云、榴莲云等9家精选服务商的官方线路架构拆解、实时资费清单、住宅家宽落地支持与专属优惠码核验，坚持小额月付选型原则。',
+  jiaocheng: '2026全平台客户端深度配置与科学上网实战指南。涵盖Clash Verge Rev、Mihomo Party、v2rayN、小火箭Shadowrocket与OpenClash软路由的订阅导入、TUN虚拟网卡驱动接管、DNS防污染与分流排坑教程。',
+  tools: '2026极客网络诊断与测速实用工具箱。提供高可用Subconverter订阅转换、ACL4SSR规则集集成、Fast/Speedtest/SEET多节点晚高峰测速、OpenAI/Claude风控检测与NextTrace真假专线路由追踪方案。',
+  risk: '跨境网络代理服务行业风险预警与避坑指南专栏。客观披露跑路高危信号、拆解大促超售套路、警惕假专线陷阱，树立物理级双链路冗余容灾与全周期理性网络消费哲学，杜绝大额沉没资金损失。',
 };
 
 // 专题编撰初衷、核心技术哲学与选型要诀卡片数据
@@ -196,9 +196,24 @@ function getBadgeInfo(post: any) {
 
   return { label: post.data.category.toUpperCase(), class: 'bg-slate-100 text-slate-700 border-slate-200' };
 }
+
+const categorySchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: title,
+  description: desc,
+  url: `https://jichangw.com/category/${category}`,
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: 'https://jichangw.com' },
+      { '@type': 'ListItem', position: 2, name: categoryNames[category] || category, item: `https://jichangw.com/category/${category}` },
+    ],
+  },
+};
 ---
 
-<BaseLayout title={title} description={desc}>
+<BaseLayout title={title} description={desc} schema={categorySchema}>
   <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 space-y-8">
     <!-- Breadcrumb -->
     <nav class="flex items-center gap-2 text-xs font-mono text-slate-400">

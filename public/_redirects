@@ -8,3 +8,6 @@
 /go/flyv https://fugui.flyvaff.com/#/?code=gxmUajhy 302
 /go/lingdongyun https://fugui.lingdongaff.com/#/?code=lyfEXnqR 302
 
+# Sitemap 301 Redirect
+/sitemap.xml /sitemap-0.xml 301
+

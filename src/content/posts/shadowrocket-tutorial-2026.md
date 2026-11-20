@@ -33,7 +33,6 @@ faq:
     answer: 按需连接是 iOS 系统的特权网络机制。开启后，小火箭会在检测到网络变化、切换 WiFi 或访问特定域名时自动在后台唤醒 VPN 通道，彻底避免锁屏后代理进程被 iOS 内存管理机制杀后台导致断连。
 ---
 
-# 2026小火箭Shadowrocket完整配置教程：iOS端节点导入、分流规则优化与按需连接防断流指南
 
 作为苹果 iOS 生态中最具统治力的轻量化代理工具，**Shadowrocket（俗称“小火箭”）**凭借其超高的性能利用率、对全协议（Shadowsocks、VLESS、Trojan、Hysteria 2、WireGuard）的广泛兼容性，以及原生的规则分流体系，成为数以千万计出海 iPhone 与 iPad 用户的首选必备工具。
 

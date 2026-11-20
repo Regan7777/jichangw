@@ -150,11 +150,42 @@ const faqs = [
     answer: '轻度办公、文字查资料及备用防失联用户推荐不限时按量付费套餐；重度4K流媒体播放、大文件下载或远程办公用户选择固定周期的大流量包月套餐成本更低。',
   },
 ];
+
+const homeSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://jichangw.com/#website',
+      url: 'https://jichangw.com',
+      name: '机场网 · 2026科学上网与机场推荐指南',
+      description: '2026年最新科学上网梯子与节点选型门户。汇总神行加速、大佬云等主流服务商的官方资费、线路架构与站点实时核验，提供Mihomo客户端分流与报错排查。',
+      inLanguage: 'zh-CN',
+      publisher: {
+        '@type': 'Organization',
+        name: '机场网评测实验室 (JICHANGW Lab)',
+        url: 'https://jichangw.com',
+      },
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((item: { question: string; answer: string }) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    },
+  ],
+};
 ---
 
 <BaseLayout
   title="2026科学上网与机场推荐指南：优质梯子节点横向评测与Mihomo配置大盘"
   description="2026年最新科学上网梯子与节点选型门户。汇总神行加速、大佬云、榴莲云等9家主流服务商的官方资费、优缺点对比与站点实时核验，提供Mihomo客户端分流与报错排查。"
+  schema={homeSchema}
 >
   <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 space-y-12">
     <!-- Hero Branding Header -->

@@ -33,7 +33,6 @@ faq:
     answer: 普通“系统代理”模式仅接管支持系统代理的环境（如浏览器）。若要让终端开发环境、Git Clone 及各类命令行工具无感翻墙，必须在 Clash Verge Rev 设置中开启「TUN 模式」，或者在终端内手动执行代理端口环境变量注入。
 ---
 
-# 2026 Clash Verge Rev完整配置教程：Mihomo内核TUN模式虚拟网卡接管、自定义分流规则与10054报错排查指南
 
 在原著名客户端 Clash for Windows（CFW）停止维护后，基于 **Tauri + Rust** 框架重构并以 **Mihomo（原名 Clash.Meta）** 为核心引擎的开源跨平台神器——**Clash Verge Rev**，已全面成为 2026 年 Windows 与 macOS 桌面操作系统上的绝对统治级主力工具。
 
