@@ -59,7 +59,7 @@ export const affiliates: Record<string, Affiliate> = {
   flyv: {
     id: 'flyv',
     name: '飞V',
-    targetUrl: 'https://fugui.flyvaff.com/#/?code=gxmUajhy',
+    targetUrl: 'https://cola.flyvaff.com/#/register/?code=gxmUajhy',
     coupon: 'flyv999',
     description: '经济型中继隧道，12元起步低门槛查阅与备用容灾',
   },
