@@ -1,6 +1,6 @@
 ---
 title: 2026 v2rayNG安卓完整配置教程：移动端订阅导入、分应用代理与激进电池保活指南
-description: 2026最新安卓系统v2rayNG完整使用指南。深度解析GitHub官方正版下载、节点订阅导入、分应用代理（Per-App Proxy）排除境内网银、激进电池后台保活防断流，附高频长尾报错与全套FAQ。
+description: 2026安卓Android系统v2rayNG完整使用教程：详细整理GitHub官方正版APK安全下载源、节点订阅导入与真连接测速、分应用代理（Per-App Proxy）精准排除国内银行与社交软件防风控，以及小米/华为/OPPO等系统激进后台电池优化保活防断流设置，并附带分片连接与常见报错排查全套FAQ指南。
 slug: articles/v2rayng-tutorial-2026
 pubDate: 2026-10-30
 updatedDate: 2026-10-30

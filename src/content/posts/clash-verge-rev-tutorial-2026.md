@@ -1,6 +1,6 @@
 ---
 title: 2026 Clash Verge Rev完整配置教程：Mihomo内核TUN模式虚拟网卡接管、自定义分流规则与10054报错排查指南
-description: 2026最新桌面端Clash Verge Rev深度使用指南。基于Mihomo高可用核心，全面剖析订阅导入、TUN虚拟网卡驱动安装、Fake-IP DNS防污染、ACL4SSR规则集集成，附10054连接重置报错与UWP回环代理完整解决方案。
+description: 2026桌面端Clash Verge Rev深度配置与排错指南：基于Mihomo内核，全面剖析Windows与macOS官方正版安装、订阅链接导入、TUN虚拟网卡接管、Fake-IP DNS防污染调优及ACL4SSR智能分流规则，并附10054连接重置报错、端口占用冲突与UWP回环代理完整解决方案。
 slug: articles/clash-verge-rev-tutorial-2026
 pubDate: 2026-10-30
 updatedDate: 2026-10-30

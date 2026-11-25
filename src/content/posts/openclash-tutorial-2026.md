@@ -1,6 +1,6 @@
 ---
 title: 2026 OpenClash软路由完整配置教程：Fake-IP模式、DNS防污染与全屋设备无感分流指南
-description: 2026最新OpenWrt固件OpenClash深度配置指南。全面拆解Fake-IP增强模式、全屋设备无感代理、防DNS污染与泄漏调优、Apple TV与PS5/Switch主机游戏加速，附高频报错与全套FAQ。
+description: 2026 OpenWrt软路由OpenClash完整配置指南：深入拆解Fake-IP增强模式、旁路由与主路由拓扑选择、本地DNS防污染与防泄漏调优、流媒体与AI精细分流，帮助实现全屋终端及Apple TV、PS5、Switch游戏主机无感科学上网加速，并附常见防火墙冲突与断流报错完整FAQ排查方案。
 slug: articles/openclash-tutorial-2026
 pubDate: 2026-10-30
 updatedDate: 2026-10-30

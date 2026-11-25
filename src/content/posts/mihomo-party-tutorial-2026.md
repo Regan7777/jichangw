@@ -1,6 +1,6 @@
 ---
 title: 2026 Mihomo Party完整配置教程：现代化极简响应式UI、开箱即用体验与流媒体分流实战指南
-description: 2026最新跨平台客户端Mihomo Party深度上手指南。剖析现代化优雅设计美学、开箱即用TUN虚拟网卡接管、节点订阅极速导入、流媒体与AI自适应分流，附高频长尾报错与全套FAQ。
+description: 2026跨平台客户端Mihomo Party深度配置教程：聚焦极简响应式UI设计，全面详解Windows、macOS与Linux官方正版安装、开箱即用TUN虚拟网卡接管、机场订阅极速导入、流媒体（Netflix/YouTube）与AI（ChatGPT/Claude）自适应分流规则，并附高频报错排查与全套FAQ。
 slug: articles/mihomo-party-tutorial-2026
 pubDate: 2026-10-30
 updatedDate: 2026-10-30

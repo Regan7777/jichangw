@@ -1,6 +1,6 @@
 ---
 title: 2026 v2rayN 7.x完整配置教程：Windows端Xray与Sing-box双内核切换、分流规则与订阅失败排坑指南
-description: 2026最新Windows经典客户端v2rayN 7.x深度配置指南。全面拆解Xray与Sing-box双内核自由切换机制、TUN模式开启、自定义路由规则防封、订阅更新失败与500/10054报错排查方案。
+description: 2026 Windows经典桌面客户端v2rayN 7.x深度配置指南：全面拆解新版界面下的Xray-core与Sing-box双内核自由切换机制、机场订阅批量导入与延迟测速、系统代理与TUN虚拟网卡接管、自定义绕过大陆路由分流规则，并针对订阅更新失败、500报错、10054连接重置与端口冲突提供完整排坑解决方案。
 slug: articles/v2rayn-tutorial-2026
 pubDate: 2026-10-30
 updatedDate: 2026-10-30

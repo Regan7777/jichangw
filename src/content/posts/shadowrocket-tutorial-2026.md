@@ -1,6 +1,6 @@
 ---
 title: 2026小火箭Shadowrocket完整配置教程：iOS端节点导入、分流规则优化与按需连接防断流指南
-description: 2026最新苹果iOS端小火箭Shadowrocket配置教程。深度讲解美区Apple ID下载、节点订阅导入、ACL4SSR精细分流规则、按需连接（On Demand）设置与耗电发热优化，附高频长尾报错排查与全套FAQ。
+description: 2026苹果iOS小火箭Shadowrocket完整配置教程：从美区Apple ID安全注册与App Store官方正版下载讲起，手把手演示节点订阅URL导入、扫码添加、ACL4SSR智能分流规则挂载、按需连接（On Demand）防断流及低耗电优化，并整理证书信任、超时与DNS异常等高频故障排查FAQ。
 slug: articles/shadowrocket-tutorial-2026
 pubDate: 2026-10-30
 updatedDate: 2026-10-30

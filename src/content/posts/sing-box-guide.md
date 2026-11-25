@@ -1,6 +1,6 @@
 ---
 title: 2026 Sing-box通用配置指南：全平台通用代理内核、JSON配置结构与Hysteria 2极速抗弱网实战
-description: 2026最新通用代理平台Sing-box深度配置教程。全面拆解新一代内核架构、JSON配置文件结构（Inbounds/Outbounds/Route/DNS）、Hysteria 2前沿协议集成与极致内存优化，附排坑指南与全套FAQ。
+description: 2026通用代理内核Sing-box深度配置教程：全面解析新一代Go语言跨平台内核架构与极低内存占用优势，手把手拆解标准JSON配置结构（Inbounds/Outbounds/Route/DNS）、Hysteria 2与VLESS Reality抗弱网协议实践，全面覆盖规则集转换及JSON报错排查FAQ。
 slug: articles/sing-box-guide
 pubDate: 2026-10-30
 updatedDate: 2026-10-30
